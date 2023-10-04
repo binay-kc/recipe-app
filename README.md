@@ -14,6 +14,12 @@ Name of Developers:
 - Sahil Bhatta
 
 App features:
+- Show Recipe Lists (Home Page)
+- Recipe Search
+- Recipe Details
+- Navigation Menu
+- Share Recipes
+- External cooking Resources
 - Favorite recipe
 - Offline Access
 - Ingredients Shopping List
