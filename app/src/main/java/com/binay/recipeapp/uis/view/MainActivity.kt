@@ -1,7 +1,8 @@
-package com.binay.recipeapp
+package com.binay.recipeapp.uis.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.binay.recipeapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
