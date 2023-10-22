@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
