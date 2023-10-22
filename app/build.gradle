@@ -4,13 +4,16 @@ plugins {
 }
 
 android {
+
+    def sDkVersion = 34
+
     namespace 'com.binay.recipeapp'
-    compileSdk 33
+    compileSdk sDkVersion
 
     defaultConfig {
         applicationId "com.binay.recipeapp"
         minSdk 24
-        targetSdk 33
+        targetSdk sDkVersion
         versionCode 1
         versionName "1.0"
 
