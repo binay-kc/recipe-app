@@ -18,4 +18,10 @@
     <color name="accent_1">#FFA500</color>
     <color name="accent_2">#98FF98</color>
     <color name="text_color">#2F4F4F</color>-->
+
+    <color name="toolbar_background">#B81C55</color>
+    <color name="unit_converter_top_bg">#B81C55</color>
+    <color name="unit_converter_bottom_bg">#BCB8B9</color>
+    <color name="app_bg">#EBE9EA</color>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.binay.recipeapp
+package com.binay.recipeapp.uis.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
