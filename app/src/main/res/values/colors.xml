@@ -11,6 +11,7 @@
     <color name="text_on_background">#f1faee</color>
     <color name="default_tab_color">#919191</color>
     <color name="tab_indicator_color">#00656d</color>
+    <color name="grey">#F5F5F5</color>
 
     <!--<color name="primary_color">#4F86F7</color>
     <color name="secondary_color">#F3E5AB</color>

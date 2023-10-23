@@ -4,6 +4,7 @@
         <!-- Customize your light theme here. -->
          <item name="colorPrimary">@color/primary_color</item>
         <item name="android:windowBackground">@color/background</item>
+        <item name="android:textViewStyle">@style/AppText</item>
     </style>
 
     <style name="Theme.RecipeApp" parent="Base.Theme.RecipeApp" />
@@ -12,6 +13,12 @@
         <item name="android:fontFamily">@font/quicksand</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
+        <!-- You can specify other text attributes here, like text color, text size, etc. -->
+    </style>
+
+    <style name="Header.Text" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/pt_sans_bold</item>
+        <item name="android:textSize">16sp</item>
         <!-- You can specify other text attributes here, like text color, text size, etc. -->
     </style>
 
