@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/tab_bg1">
+    </item>
+    <item android:drawable="@drawable/tab_bg2"
+        android:top="3dp" />
+</layer-list>
