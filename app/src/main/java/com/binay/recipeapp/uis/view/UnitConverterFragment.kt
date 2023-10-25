@@ -44,19 +44,11 @@ class UnitConverterFragment : Fragment() {
     }
 
     private fun initView() {
-        initToolbar()
         initViewModel()
         initSpinnerTop()
         initSpinnerBottom()
         initSwap()
         initEditText()
-    }
-
-    private fun initToolbar(){
-        mBinding.layoutToolbar.let {
-            it.tvToolbarHeader.text = getString(R.string.label_unit_converter)
-            it.ibBack.setOnClickListener { activity?.onBackPressed() }
-        }
     }
 
     private fun initViewModel() {

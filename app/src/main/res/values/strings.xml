@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Culinary Delights</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="unit_converter">Unit Converter</string>
-    <string name="label_unit_converter">Unit Converter</string>
+    <string name="nav_converter">Unit Converter</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_favorite">Favorites</string>
+    <string name="search_hint">Search for Recipes</string>
 
     <string-array name="units_array">
         <item>Cup</item>
@@ -12,5 +12,17 @@
         <item>Gram</item>
         <item>Millilitre</item>
         <item>Ounce</item>
+    </string-array>
+
+    <string-array name="category_array">
+        <item>For You</item>
+        <item>Vegetarian</item>
+        <item>Breakfast</item>
+        <item>Snack</item>
+        <item>Appetizer</item>
+        <item>Main Course</item>
+        <item>Salad</item>
+        <item>Dessert</item>
+        <item>Drink</item>
     </string-array>
 </resources>

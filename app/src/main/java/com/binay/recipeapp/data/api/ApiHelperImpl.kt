@@ -5,9 +5,9 @@ import com.binay.recipeapp.data.model.RecipeResponseData
 
 class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     // TODO: Remove this and use as per required
-    override suspend fun getData(): RecipeResponseData {
+    override suspend fun getData(tag: String): RecipeResponseData {
         Log.d("haancha", "getData: ")
-        return apiService.getData()
+        return apiService.getData(tag)
     }
 
 }

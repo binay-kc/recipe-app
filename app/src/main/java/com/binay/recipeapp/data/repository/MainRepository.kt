@@ -5,5 +5,5 @@ import com.binay.recipeapp.data.api.ApiHelper
 class MainRepository(private val apiHelper: ApiHelper) {
 
     // TODO: Remove this and use as per required
-    suspend fun getRecipes() = apiHelper.getData()
+    suspend fun getRecipes(tag: String) = apiHelper.getData(tag)
 }

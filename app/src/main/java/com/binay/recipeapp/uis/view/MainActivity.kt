@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
-    val imageList = intArrayOf(R.drawable.nav_home, R.drawable.nav_fav, R.drawable.nav_more)
+    val imageList = intArrayOf(R.drawable.nav_home, R.drawable.nav_search, R.drawable.nav_fav, R.drawable.nav_more)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -27,13 +27,30 @@ class MainActivity : AppCompatActivity() {
 
         val fragments: MutableList<Fragment> = ArrayList()
         fragments.add(HomeFragment())
+        fragments.add(SearchFragment())
         fragments.add(FavoriteFragment())
-        fragments.add(MoreFragment())
+        fragments.add(UnitConverterFragment())
 
         //code to change selected tab color
         binding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 tab.icon!!.setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.primary_color), PorterDuff.Mode.SRC_IN)
+                binding.viewPager.setCurrentItem(tab.position, false)
+
+                when(tab.position) {
+                    1 -> {
+                        binding.toolbar.toolbarTitle.text = getString(R.string.nav_search)
+                    }
+                    2 -> {
+                        binding.toolbar.toolbarTitle.text = getString(R.string.nav_favorite)
+                    }
+                    3 -> {
+                        binding.toolbar.toolbarTitle.text = getString(R.string.nav_converter)
+                    }
+                    else -> {
+                        binding.toolbar.toolbarTitle.text = getString(R.string.app_name)
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {

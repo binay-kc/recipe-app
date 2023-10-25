@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.recipeapp.data.repository.MainRepository
@@ -24,17 +25,20 @@ class MainViewModel(private val mRepository : MainRepository) : ViewModel() {
         viewModelScope.launch {
             dataIntent.consumeAsFlow().collect{
                 when(it){
-                    is DataIntent.FetchData -> fetchData()
+                    is DataIntent.FetchRecipeData -> fetchData(
+                        it.tag
+                    )
                 }
             }
         }
     }
 
-    private fun fetchData(){
+    private fun fetchData(tag: String){
         viewModelScope.launch {
+            Log.d("viewmodel", "fetchData: ")
             dataState.value = DataState.Loading
             dataState.value = try{
-                DataState.ResponseData(mRepository.getRecipes())
+                DataState.ResponseData(mRepository.getRecipes(tag))
             }catch (e: Exception){
                 // TODO: Add proper way to parse error message and display to users
                 DataState.Error(e.localizedMessage)

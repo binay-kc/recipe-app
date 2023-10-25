@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -23,14 +24,14 @@ object RetrofitBuilder {
    private val httpClient : OkHttpClient.Builder = OkHttpClient.Builder()
        .addInterceptor(Interceptor { chain ->
            val originalRequest : Request = chain.request()
-           val originalHttpUrl : HttpUrl = originalRequest.url
-           val newUrl : HttpUrl = originalHttpUrl.newBuilder()
-               .addQueryParameter("apiKey", API_KEY)
+           val newRequest = originalRequest.newBuilder()
+               .addHeader("x-api-key", API_KEY)
                .build()
-           val newRequestBuilder : Request.Builder = originalRequest.newBuilder().url(newUrl)
-           val newRequest = newRequestBuilder.build()
            chain.proceed(newRequest)
        })
+       .addInterceptor((HttpLoggingInterceptor().apply {
+        level = HttpLoggingInterceptor.Level.BASIC // Set the logging level to BASIC
+    }))
 
     val apiService : ApiService = getRetrofit().create(ApiService::class.java)
 }
