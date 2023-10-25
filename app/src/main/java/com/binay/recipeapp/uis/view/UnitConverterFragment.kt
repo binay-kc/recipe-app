@@ -55,6 +55,7 @@ class UnitConverterFragment : Fragment() {
     private fun initToolbar(){
         mBinding.layoutToolbar.let {
             it.toolbarTitle.text = getString(R.string.label_unit_converter)
+            it.backBtn.visibility = View.VISIBLE
             it.backBtn.setOnClickListener { activity?.onBackPressed() }
         }
     }
@@ -157,8 +158,6 @@ class UnitConverterFragment : Fragment() {
             if (indexOfSelectedTop == indexOfSelectedBottom) {
                 mBinding.etSpinnerBottom.setText(mBinding.etSpinnerTop.text.toString())
             } else {
-
-
                 lifecycleScope.launch {
                     mViewModel.unitIntent.send(
                         UnitIntent.ConvertUnit(

@@ -81,7 +81,8 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_swap" />
+                android:src="@drawable/ic_swap"
+                app:tint="@color/primary_color" />
 
         </androidx.cardview.widget.CardView>
 
