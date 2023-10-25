@@ -10,15 +10,16 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.GONE
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MoreFragment.MoreFragmentListener {
 
 
     lateinit var binding: ActivityMainBinding
 
-    val imageList = intArrayOf(R.drawable.nav_home, R.drawable.nav_fav, R.drawable.nav_more)
+    val imageList = intArrayOf(R.drawable.nav_home, R.drawable.nav_fav, R.drawable.nav_more,R.drawable.ic_swap)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity() {
         fragments.add(HomeFragment())
         fragments.add(FavoriteFragment())
         fragments.add(MoreFragment())
+        fragments.add(UnitConverterFragment())
 
         //code to change selected tab color
 
@@ -81,5 +83,9 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int {
             return fragments.size
         }
+    }
+
+    override fun onUnitConverterClicked() {
+
     }
 }
