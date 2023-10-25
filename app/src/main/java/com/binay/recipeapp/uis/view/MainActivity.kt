@@ -1,8 +1,8 @@
 package com.binay.recipeapp.uis.view
 
 import android.graphics.PorterDuff
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -10,18 +10,23 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayout.GONE
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MoreFragment.MoreFragmentListener {
+
 
     lateinit var binding: ActivityMainBinding
 
-    val imageList = intArrayOf(R.drawable.nav_home, R.drawable.nav_search, R.drawable.nav_fav, R.drawable.nav_more)
+
+    val imageList = intArrayOf(R.drawable.nav_home, R.drawable.nav_search, R.drawable.nav_fav, R.drawable.nav_more,R.drawable.ic_swap)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         binding.viewPager.isUserInputEnabled = false
 
@@ -32,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         fragments.add(UnitConverterFragment())
 
         //code to change selected tab color
+
         binding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 tab.icon!!.setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.primary_color), PorterDuff.Mode.SRC_IN)
@@ -54,7 +60,12 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                tab.icon!!.setColorFilter(ContextCompat.getColor(this@MainActivity, R.color.default_tab_color), PorterDuff.Mode.SRC_IN)
+                tab.icon!!.setColorFilter(
+                    ContextCompat.getColor(
+                        this@MainActivity,
+                        R.color.default_tab_color
+                    ), PorterDuff.Mode.SRC_IN
+                )
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {}
@@ -85,5 +96,9 @@ class MainActivity : AppCompatActivity() {
         override fun getItemCount(): Int {
             return fragments.size
         }
+    }
+
+    override fun onUnitConverterClicked() {
+
     }
 }

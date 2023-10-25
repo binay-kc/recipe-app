@@ -149,8 +149,6 @@ class UnitConverterFragment : Fragment() {
             if (indexOfSelectedTop == indexOfSelectedBottom) {
                 mBinding.etSpinnerBottom.setText(mBinding.etSpinnerTop.text.toString())
             } else {
-
-
                 lifecycleScope.launch {
                     mViewModel.unitIntent.send(
                         UnitIntent.ConvertUnit(

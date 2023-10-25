@@ -5,6 +5,9 @@
     <string name="nav_favorite">Favorites</string>
     <string name="search_hint">Search for Recipes</string>
 
+    <string name="unit_converter">Unit Converter</string>
+    <string name="label_unit_converter">Unit Converter</string>
+
     <string-array name="units_array">
         <item>Cup</item>
         <item>Table Spoon</item>
@@ -25,4 +28,9 @@
         <item>Dessert</item>
         <item>Drink</item>
     </string-array>
+
+    <string-array name="more_fragment_list">
+        <item>Unit Converter</item>
+    </string-array>
+
 </resources>

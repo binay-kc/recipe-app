@@ -11,14 +11,16 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:background="@color/secondary_color"
+            android:background="@drawable/unit_converter_top_bg"
             android:gravity="center"
+            android:layout_marginVertical="20dp"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,9 +39,9 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner_top"
                     android:layout_width="wrap_content"
-                    android:paddingHorizontal="13dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin_top_double"
+                    android:paddingHorizontal="13dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_spinner_top" />
@@ -64,15 +66,18 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_swap" />
+                android:src="@drawable/ic_swap"
+                app:tint="@color/primary_color" />
 
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:background="@drawable/unit_converter_bottom_bg"
             android:gravity="center"
+            android:layout_marginVertical="20dp"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -93,10 +98,10 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner_bottom"
                     android:layout_width="wrap_content"
-                    android:paddingHorizontal="13dp"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
                     android:layout_marginTop="@dimen/default_margin_top_double"
+                    android:clickable="false"
+                    android:paddingHorizontal="13dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_spinner_bottom" />

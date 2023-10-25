@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.viewstate
 
+
 import com.binay.recipeapp.data.model.RecipeResponseData
 
 sealed class DataState{
