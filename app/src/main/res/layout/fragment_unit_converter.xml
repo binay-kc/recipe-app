@@ -54,9 +54,9 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner_top"
                     android:layout_width="wrap_content"
-                    android:paddingHorizontal="13dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin_top_double"
+                    android:paddingHorizontal="13dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_spinner_top" />
@@ -90,8 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@color/unit_converter_bottom_bg"
+            android:gravity="center"
             android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -112,10 +112,10 @@
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spinner_bottom"
                     android:layout_width="wrap_content"
-                    android:paddingHorizontal="13dp"
                     android:layout_height="wrap_content"
-                    android:clickable="false"
                     android:layout_marginTop="@dimen/default_margin_top_double"
+                    android:clickable="false"
+                    android:paddingHorizontal="13dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/et_spinner_bottom" />

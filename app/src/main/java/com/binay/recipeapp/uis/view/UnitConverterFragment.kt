@@ -57,6 +57,7 @@ class UnitConverterFragment : Fragment() {
             it.toolbarTitle.text = getString(R.string.label_unit_converter)
             it.backBtn.visibility = View.VISIBLE
             it.backBtn.setOnClickListener { activity?.onBackPressed() }
+
         }
     }
 
