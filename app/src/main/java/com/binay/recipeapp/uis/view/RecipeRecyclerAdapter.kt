@@ -8,12 +8,16 @@ import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.ItemRecipeBinding
 import com.squareup.picasso.Picasso
 
-class RecipeRecyclerAdapter(private val context: Context, private val recipeList: List<RecipeData>): RecyclerView.Adapter<RecipeRecyclerAdapter.RecipeViewHolder>() {
+class RecipeRecyclerAdapter(
+    private val context: Context,
+    private val recipeList: List<RecipeData>
+) : RecyclerView.Adapter<RecipeRecyclerAdapter.RecipeViewHolder>() {
 
-    class RecipeViewHolder(binding: ItemRecipeBinding): RecyclerView.ViewHolder(binding.root) {
+    class RecipeViewHolder(binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
         val recipeName = binding.recipeName
         val recipeImage = binding.recipeImage
         val calories = binding.recipeCalorie
+        val cbFavorite = binding.cbFavorite
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
@@ -26,11 +30,14 @@ class RecipeRecyclerAdapter(private val context: Context, private val recipeList
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        holder.recipeName.text = recipeList[position].title
+        val recipe = recipeList[position]
+        holder.recipeName.text = recipe.title
 
-        if (recipeList[position].image?.isNotEmpty() == true)
+        if (recipe.image?.isNotEmpty() == true)
             Picasso.with(context).load(recipeList[position].image).into(holder.recipeImage)
 
-        holder.calories.text = "" + recipeList[position].readyInMinutes + " mins"
+        holder.calories.text = "${recipe.readyInMinutes} mins"
+
+        holder.cbFavorite.isChecked = recipe.isFavorite ?: false
     }
 }

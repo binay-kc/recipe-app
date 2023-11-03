@@ -19,5 +19,6 @@ data class RecipeData (
     var image                    : String?                         = null,
     var cuisines                 : ArrayList<String>               = arrayListOf(),
     var dishTypes                : ArrayList<String>               = arrayListOf(),
-    var instructions             : String?                         = null
+    var instructions             : String?                         = null,
+    var isFavorite             : Boolean?                          = null
 )
