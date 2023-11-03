@@ -1,5 +1,9 @@
 package com.binay.recipeapp.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class RecipeData (
     var vegetarian               : Boolean?                        = null,
     var vegan                    : Boolean?                        = null,
@@ -11,7 +15,7 @@ data class RecipeData (
     var aggregateLikes           : Int?                            = null,
     var healthScore              : Int?                            = null,
     var extendedIngredients      : ArrayList<ExtendedIngredients>  = arrayListOf(),
-    var id                       : Int?                            = null,
+   @PrimaryKey var id                       : Int                            = -1,
     var title                    : String?                         = null,
     var readyInMinutes           : Int?                            = null,
     var summary                  : String?                         = null,
