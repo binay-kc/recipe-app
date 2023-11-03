@@ -3,6 +3,9 @@ package com.binay.recipeapp.uis.view
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.CompoundButton
+import android.widget.RadioGroup
+import android.widget.RadioGroup.OnCheckedChangeListener
 import androidx.recyclerview.widget.RecyclerView
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.ItemRecipeBinding
@@ -10,7 +13,8 @@ import com.squareup.picasso.Picasso
 
 class RecipeRecyclerAdapter(
     private val context: Context,
-    private val recipeList: List<RecipeData>
+    private val recipeList: List<RecipeData>,
+    private val mListener: RecipeClickListener
 ) : RecyclerView.Adapter<RecipeRecyclerAdapter.RecipeViewHolder>() {
 
     class RecipeViewHolder(binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -18,6 +22,7 @@ class RecipeRecyclerAdapter(
         val recipeImage = binding.recipeImage
         val calories = binding.recipeCalorie
         val cbFavorite = binding.cbFavorite
+        val rootView = binding.root
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
@@ -39,5 +44,27 @@ class RecipeRecyclerAdapter(
         holder.calories.text = "${recipe.readyInMinutes} mins"
 
         holder.cbFavorite.isChecked = recipe.isFavorite ?: false
+
+        holder.cbFavorite.setOnCheckedChangeListener(object : OnCheckedChangeListener,
+            CompoundButton.OnCheckedChangeListener {
+            override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {
+
+            }
+
+            override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
+                mListener.onFavoriteChanged(recipe, p1)
+            }
+
+        })
+
+        holder.rootView.setOnClickListener {
+            mListener.onRecipeClicked(recipe)
+        }
+
+    }
+
+    interface RecipeClickListener {
+        fun onFavoriteChanged(recipe: RecipeData, isToFavorite: Boolean)
+        fun onRecipeClicked(recipe: RecipeData)
     }
 }

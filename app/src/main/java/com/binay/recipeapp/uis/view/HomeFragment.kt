@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
+import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
+import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.FragmentHomeBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.intent.UnitIntent
@@ -76,8 +78,25 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
 
                     is DataState.ResponseData -> {
                         Log.d("haancha", "initViewModel: "+it.recipeResponseData)
-                        recipeAdapter = RecipeRecyclerAdapter(requireContext(), it.recipeResponseData.recipes)
+                        recipeAdapter = RecipeRecyclerAdapter(requireContext(), it.recipeResponseData.recipes,
+                            object : RecipeRecyclerAdapter.RecipeClickListener{
+                                override fun onFavoriteChanged(
+                                    recipe: RecipeData,
+                                    isToFavorite: Boolean
+                                ) {
+                                    changeFavoriteStatus(recipe,isToFavorite)
+                                }
+
+                                override fun onRecipeClicked(recipe: RecipeData) {
+
+                                }
+
+                            })
                         binding.recipeRecycler.adapter = recipeAdapter
+                    }
+
+                    is DataState.FavoriteResponse ->{
+                        Log.d("Favorite"," Vayo")
                     }
 
                     else -> {
@@ -93,6 +112,16 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
             viewModel.dataIntent.send(
                 DataIntent.FetchRecipeData(
                     tag
+                )
+            )
+        }
+    }
+
+    private fun changeFavoriteStatus(recipe : RecipeData, isToFavorite : Boolean) {
+        lifecycleScope.launch {
+            viewModel.dataIntent.send(
+                DataIntent.ChangeFavoriteStatus(
+                    recipe, isToFavorite
                 )
             )
         }
