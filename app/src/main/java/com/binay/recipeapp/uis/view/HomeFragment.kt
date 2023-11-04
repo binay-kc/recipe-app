@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,22 +21,24 @@ import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.util.Locale
 
 class HomeFragment : Fragment(), OnCategoryClickListener {
 
-    lateinit var binding: FragmentHomeBinding
-    lateinit var adapter: CategoryRecyclerAdapter
-    lateinit var recipeAdapter: RecipeRecyclerAdapter
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var adapter: CategoryRecyclerAdapter
+    private lateinit var recipeAdapter: RecipeRecyclerAdapter
 
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
-    // TODO: Implement ways to communicate home and favorite fragments to show updated list
+    private var mListener: HomeFragmentListener? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater)
         return binding.root
     }
@@ -68,7 +71,11 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
                     recipe: RecipeData,
                     isToFavorite: Boolean
                 ) {
-                    changeFavoriteStatus(recipe, isToFavorite)
+                    try {
+                        changeFavoriteStatus(recipe, isToFavorite)
+                    } catch (e: Exception) {
+                        Log.e("Here", " Favorite exception")
+                    }
                 }
 
                 override fun onRecipeClicked(recipe: RecipeData) {
@@ -79,7 +86,14 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
         binding.recipeRecycler.adapter = recipeAdapter
 
         fetchData("")
+    }
 
+
+    override fun onAttach(context: Context) {
+        if (context is HomeFragmentListener) {
+            mListener = context
+        }
+        super.onAttach(context)
     }
 
     private fun initViewModel() {
@@ -102,6 +116,7 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
 
                     is DataState.AddToFavoriteResponse -> {
                         Log.d("Favorite", " Vayo")
+                        mListener?.refreshFavoriteFragment()
                     }
 
                     else -> {
@@ -147,5 +162,9 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
                 fetchData(cuisines[position].lowercase(Locale.ROOT))
             }
         }
+    }
+
+    interface HomeFragmentListener {
+        fun refreshFavoriteFragment()
     }
 }

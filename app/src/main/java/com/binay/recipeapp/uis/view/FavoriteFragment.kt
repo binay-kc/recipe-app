@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,8 @@ class FavoriteFragment : Fragment() {
     private lateinit var mAdapter: RecipeRecyclerAdapter
     private lateinit var mViewModel: MainViewModel
 
+    private var mListener: FavoriteListener? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,6 +40,13 @@ class FavoriteFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         initViewModel()
+    }
+
+    override fun onAttach(context: Context) {
+        if (context is FavoriteListener) {
+            mListener = context
+        }
+        super.onAttach(context)
     }
 
     private fun initView() {
@@ -84,6 +94,7 @@ class FavoriteFragment : Fragment() {
                         if (!isFavorite) {
                             mAdapter.removeRecipe(it.recipe)
                         }
+                        mListener?.refreshHomeFragment()
                     }
 
                     is DataState.FavoriteResponse -> {
@@ -121,5 +132,10 @@ class FavoriteFragment : Fragment() {
                 )
             )
         }
+    }
+
+
+    interface FavoriteListener {
+        fun refreshHomeFragment()
     }
 }
