@@ -13,9 +13,15 @@ import com.squareup.picasso.Picasso
 
 class RecipeRecyclerAdapter(
     private val context: Context,
-    private val recipeList: List<RecipeData>,
     private val mListener: RecipeClickListener
 ) : RecyclerView.Adapter<RecipeRecyclerAdapter.RecipeViewHolder>() {
+
+    private var recipeList: ArrayList<RecipeData> = ArrayList()
+
+    fun setRecipes(recipes: ArrayList<RecipeData>) {
+        this.recipeList = recipes
+        notifyDataSetChanged()
+    }
 
     class RecipeViewHolder(binding: ItemRecipeBinding) : RecyclerView.ViewHolder(binding.root) {
         val recipeName = binding.recipeName
@@ -61,6 +67,13 @@ class RecipeRecyclerAdapter(
             mListener.onRecipeClicked(recipe)
         }
 
+    }
+
+    fun removeRecipe(recipe: RecipeData) {
+        val position = recipeList.indexOf(recipe)
+        recipeList.remove(recipe)
+        notifyItemRemoved(position)
+//        notifyItemRangeRemoved(position, 1)
     }
 
     interface RecipeClickListener {

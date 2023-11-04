@@ -11,4 +11,6 @@ sealed class DataIntent {
         val recipe: RecipeData,
         val isToFavorite: Boolean
     ) : DataIntent()
+
+    data class FetchFavoriteRecipe(val isFromFavorite: Boolean?) : DataIntent()
 }

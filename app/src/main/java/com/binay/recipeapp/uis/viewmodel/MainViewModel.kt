@@ -43,6 +43,8 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                         it.recipe,
                         it.isToFavorite
                     )
+
+                    is DataIntent.FetchFavoriteRecipe -> fetchFavoriteRecipes()
                 }
             }
         }
@@ -76,16 +78,28 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 recipe.isFavorite = isToFavorite
 //               Checks favorite Dao and updates data accordingly
                 val favoriteDao = db.favoriteDao()
+                val favoriteRecipes = db.favoriteDao().getAllRecipes()
+                favoriteRecipes.size
                 if (isToFavorite) {
                     favoriteDao.addRecipe(recipe)
                 } else {
                     favoriteDao.removeRecipe(recipe)
                 }
-                DataState.FavoriteResponse(recipe)
+                DataState.AddToFavoriteResponse(recipe)
             } catch (e: Exception) {
                 // TODO: Add proper way to parse error message and display to users
+                Log.e("Error ",""+ e.localizedMessage)
                 DataState.Error(e.localizedMessage)
             }
+        }
+    }
+
+    private fun fetchFavoriteRecipes() {
+        dataState.value = try {
+            val favoriteRecipe = db.favoriteDao().getAllRecipes()
+            DataState.FavoriteResponse(favoriteRecipe.toCollection(ArrayList()))
+        } catch (e: Exception) {
+            DataState.Error(e.localizedMessage)
         }
     }
 

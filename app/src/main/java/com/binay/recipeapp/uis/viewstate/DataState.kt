@@ -10,5 +10,7 @@ sealed class DataState{
     data class ResponseData(val recipeResponseData: RecipeResponseData) : DataState()
     data class Error(val error : String?) : DataState()
 
-    data class FavoriteResponse(val recipe: RecipeData) : DataState()
+    data class AddToFavoriteResponse(val recipe: RecipeData) : DataState()
+
+    data class FavoriteResponse(val recipes: ArrayList<RecipeData>?) : DataState()
 }

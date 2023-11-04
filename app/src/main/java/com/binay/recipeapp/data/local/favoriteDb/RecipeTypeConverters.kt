@@ -2,6 +2,7 @@ package com.binay.recipeapp.data.local.favoriteDb
 
 import androidx.room.TypeConverter
 import com.binay.recipeapp.data.model.ExtendedIngredients
+import com.binay.recipeapp.data.model.RecipeData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type

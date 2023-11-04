@@ -10,23 +10,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
-import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.FragmentHomeBinding
 import com.binay.recipeapp.uis.intent.DataIntent
-import com.binay.recipeapp.uis.intent.UnitIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
-import com.binay.recipeapp.uis.viewstate.UnitState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 import java.util.Locale
 
-class HomeFragment: Fragment(), OnCategoryClickListener {
+class HomeFragment : Fragment(), OnCategoryClickListener {
 
     lateinit var binding: FragmentHomeBinding
     lateinit var adapter: CategoryRecyclerAdapter
@@ -34,6 +30,7 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
 
     lateinit var viewModel: MainViewModel
 
+    // TODO: Implement ways to communicate home and favorite fragments to show updated list
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -51,13 +48,35 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
     private fun initView() {
         initViewModel()
         binding.categoryRecycler.setHasFixedSize(true)
-        binding.categoryRecycler.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.categoryRecycler.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        adapter = CategoryRecyclerAdapter(requireContext(), resources.getStringArray(R.array.category_array), this)
+        adapter = CategoryRecyclerAdapter(
+            requireContext(),
+            resources.getStringArray(R.array.category_array),
+            this
+        )
         binding.categoryRecycler.adapter = adapter
 
         binding.recipeRecycler.setHasFixedSize(true)
         binding.recipeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
+
+
+        recipeAdapter = RecipeRecyclerAdapter(requireContext(),
+            object : RecipeRecyclerAdapter.RecipeClickListener {
+                override fun onFavoriteChanged(
+                    recipe: RecipeData,
+                    isToFavorite: Boolean
+                ) {
+                    changeFavoriteStatus(recipe, isToFavorite)
+                }
+
+                override fun onRecipeClicked(recipe: RecipeData) {
+
+                }
+
+            })
+        binding.recipeRecycler.adapter = recipeAdapter
 
         fetchData("")
 
@@ -77,26 +96,12 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
                     }
 
                     is DataState.ResponseData -> {
-                        Log.d("haancha", "initViewModel: "+it.recipeResponseData)
-                        recipeAdapter = RecipeRecyclerAdapter(requireContext(), it.recipeResponseData.recipes,
-                            object : RecipeRecyclerAdapter.RecipeClickListener{
-                                override fun onFavoriteChanged(
-                                    recipe: RecipeData,
-                                    isToFavorite: Boolean
-                                ) {
-                                    changeFavoriteStatus(recipe,isToFavorite)
-                                }
-
-                                override fun onRecipeClicked(recipe: RecipeData) {
-
-                                }
-
-                            })
-                        binding.recipeRecycler.adapter = recipeAdapter
+                        Log.d("haancha", "initViewModel: " + it.recipeResponseData)
+                        recipeAdapter.setRecipes(it.recipeResponseData.recipes)
                     }
 
-                    is DataState.FavoriteResponse ->{
-                        Log.d("Favorite"," Vayo")
+                    is DataState.AddToFavoriteResponse -> {
+                        Log.d("Favorite", " Vayo")
                     }
 
                     else -> {
@@ -117,7 +122,7 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
         }
     }
 
-    private fun changeFavoriteStatus(recipe : RecipeData, isToFavorite : Boolean) {
+    private fun changeFavoriteStatus(recipe: RecipeData, isToFavorite: Boolean) {
         lifecycleScope.launch {
             viewModel.dataIntent.send(
                 DataIntent.ChangeFavoriteStatus(
@@ -136,8 +141,9 @@ class HomeFragment: Fragment(), OnCategoryClickListener {
             0 -> {
                 fetchData("")
             }
+
             else -> {
-                Log.d("hanyo", "categoryClick: " +position + cuisines[position])
+                Log.d("hanyo", "categoryClick: " + position + cuisines[position])
                 fetchData(cuisines[position].lowercase(Locale.ROOT))
             }
         }
