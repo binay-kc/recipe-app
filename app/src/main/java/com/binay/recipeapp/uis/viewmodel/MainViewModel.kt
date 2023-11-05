@@ -121,12 +121,16 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 Log.e("sdsdd ", "" + searchedRecipeData)
 //               Checks favorite Dao and updates data accordingly
 //                Note: If room has recipe, then it is automatically favorite
-//                recipes.recipes.forEach {
-//                    val favoriteRecipe = db.favoriteDao().getRecipe(it.id)
-//                    if (favoriteRecipe != null) {
-//                        it.isFavorite = true
-//                    }
-//                }
+                val searchedRecipes = searchedRecipeData.results?: return@launch
+                searchedRecipes.forEach {
+                    val recipeId = it.id
+                    if(recipeId!=null) {
+                        val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
+                        if (favoriteRecipe != null) {
+                            it.isFavorite = true
+                        }
+                    }
+                }
                 DataState.SearchRecipes(searchedRecipeData)
             } catch (e: Exception) {
                 // TODO: Add proper way to parse error message and display to users

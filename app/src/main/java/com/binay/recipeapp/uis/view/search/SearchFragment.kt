@@ -92,6 +92,8 @@ class SearchFragment : Fragment() {
                 Handler(Looper.getMainLooper()).postDelayed({
                     if (!p0.isNullOrEmpty()) {
                         searchRecipe(p0)
+                    } else {
+                        mAdapter.setRecipes(ArrayList())
                     }
                 }, 700)
                 return false
