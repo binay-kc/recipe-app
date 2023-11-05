@@ -8,4 +8,6 @@ class MainRepository(private val apiHelper: ApiHelper) {
     suspend fun getRecipes(tag: String) = apiHelper.getData(tag)
 
     suspend fun searchRecipes(query: String) = apiHelper.searchRecipes(query)
+
+    suspend fun getRecipeDetail(id: Int) = apiHelper.getRecipeDetail(id)
 }

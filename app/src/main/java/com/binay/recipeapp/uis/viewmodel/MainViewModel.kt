@@ -11,11 +11,13 @@ import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.data.repository.MainRepository
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewstate.DataState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.security.spec.ECField
 
 class MainViewModel(private val mRepository: MainRepository, mContext: Context) : ViewModel() {
 
@@ -134,26 +136,37 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
     }
 
     private fun changeFavoriteStatus(recipe: SearchedRecipe, isToFavorite: Boolean) {
+        val recipeId = recipe.id ?: return
         viewModelScope.launch {
             dataState.value = DataState.Loading
-            // TODO: Fetch detail of recipes as RecipeData and store accordingly
-            dataState.value = try {
-//                recipe.isFavorite = isToFavorite
-////               Checks favorite Dao and updates data accordingly
-//                val favoriteDao = db.favoriteDao()
-//                val favoriteRecipes = db.favoriteDao().getAllRecipes()
-//                favoriteRecipes.size
-//                if (isToFavorite) {
-//                    favoriteDao.addRecipe(recipe)
-//                } else {
-//                    favoriteDao.removeRecipe(recipe)
-//                }
-                DataState.AddToFavoriteResponse(RecipeData())
+            try {
+
+                val deferredRecipeDetail = async {
+                    Log.e("Recipe Detail ", " Here")
+                    return@async mRepository.getRecipeDetail(recipeId)
+                }
+
+                val recipeDetail = deferredRecipeDetail.await()
+                dataState.value = try {
+                    Log.e("Favorite ", " Here")
+                    recipeDetail.isFavorite = isToFavorite
+//               Checks favorite Dao and updates data accordingly
+                    val favoriteDao = db.favoriteDao()
+                    if (isToFavorite) {
+                        favoriteDao.addRecipe(recipeDetail)
+                    } else {
+                        favoriteDao.removeRecipe(recipeDetail)
+                    }
+                    DataState.AddToFavoriteResponse(RecipeData())
+                } catch (e: Exception) {
+                    // TODO: Add proper way to parse error message and display to users
+                    Log.e("Error ", "" + e.localizedMessage)
+                    DataState.Error(e.localizedMessage)
+                }
             } catch (e: Exception) {
-                // TODO: Add proper way to parse error message and display to users
                 Log.e("Error ", "" + e.localizedMessage)
-                DataState.Error(e.localizedMessage)
             }
+
         }
     }
 
