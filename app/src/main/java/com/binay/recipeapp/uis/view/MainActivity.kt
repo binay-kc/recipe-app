@@ -12,13 +12,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.ActivityMainBinding
+import com.binay.recipeapp.uis.view.search.SearchFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainActivity : AppCompatActivity(),
     MoreFragment.MoreFragmentListener,
-    HomeFragment.HomeFragmentListener, FavoriteFragment.FavoriteListener {
+    HomeFragment.HomeFragmentListener,
+    FavoriteFragment.FavoriteListener,
+    SearchFragment.SearchListener {
 
 
     lateinit var binding: ActivityMainBinding
