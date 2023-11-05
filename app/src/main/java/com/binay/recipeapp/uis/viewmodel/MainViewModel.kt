@@ -55,6 +55,8 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                         it.recipe,
                         it.isToFavorite
                     )
+
+                    is DataIntent.SearchRecipesByNutrients -> searchRecipesByNutrients(it.query)
                 }
             }
         }
@@ -121,10 +123,10 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 Log.e("sdsdd ", "" + searchedRecipeData)
 //               Checks favorite Dao and updates data accordingly
 //                Note: If room has recipe, then it is automatically favorite
-                val searchedRecipes = searchedRecipeData.results?: return@launch
+                val searchedRecipes = searchedRecipeData.results ?: return@launch
                 searchedRecipes.forEach {
                     val recipeId = it.id
-                    if(recipeId!=null) {
+                    if (recipeId != null) {
                         val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
                         if (favoriteRecipe != null) {
                             it.isFavorite = true
@@ -173,5 +175,32 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
 
         }
     }
+
+    private fun searchRecipesByNutrients(query: String) {
+        viewModelScope.launch {
+            dataState.value = DataState.Loading
+            dataState.value = try {
+                val searchedRecipes: ArrayList<SearchedRecipe> =
+                    mRepository.searchRecipesByIngredients(query)
+                Log.e("Recipes by nutrients ", "" + searchedRecipes)
+//               Checks favorite Dao and updates data accordingly
+//                Note: If room has recipe, then it is automatically favorite
+                searchedRecipes.forEach {
+                    val recipeId = it.id
+                    if (recipeId != null) {
+                        val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
+                        if (favoriteRecipe != null) {
+                            it.isFavorite = true
+                        }
+                    }
+                }
+                DataState.SearchRecipesByNutrients(searchedRecipes)
+            } catch (e: Exception) {
+                // TODO: Add proper way to parse error message and display to users
+                DataState.Error(e.localizedMessage)
+            }
+        }
+    }
+
 
 }

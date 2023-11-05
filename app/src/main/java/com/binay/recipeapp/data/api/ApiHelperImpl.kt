@@ -4,6 +4,7 @@ package com.binay.recipeapp.data.api
 import android.util.Log
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
+import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.data.model.SearchedRecipeData
 
 class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
@@ -18,6 +19,10 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
 
     override suspend fun getRecipeDetail(id: Int): RecipeData {
         return apiService.getRecipeDetail(id)
+    }
+
+    override suspend fun searchRecipesByIngredients(query: String): ArrayList<SearchedRecipe> {
+        return apiService.searchRecipesByIngredients(query)
     }
 
 }

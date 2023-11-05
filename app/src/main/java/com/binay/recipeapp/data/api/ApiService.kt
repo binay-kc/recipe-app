@@ -3,6 +3,7 @@ package com.binay.recipeapp.data.api
 import com.binay.recipeapp.data.model.RecipeData
 import retrofit2.http.GET
 import com.binay.recipeapp.data.model.RecipeResponseData
+import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.data.model.SearchedRecipeData
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -23,4 +24,9 @@ interface ApiService {
     suspend fun getRecipeDetail(
         @Path("id") id: Int
     ): RecipeData
+
+    @GET("recipes/findByIngredients")
+    suspend fun searchRecipesByIngredients(
+        @Query("ingredients") query: String
+    ): ArrayList<SearchedRecipe>
 }

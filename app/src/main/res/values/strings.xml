@@ -32,5 +32,10 @@
     <string-array name="more_fragment_list">
         <item>Unit Converter</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_search_by_colon">Search By:</string>
+    <string name="label_recipes">Recipes</string>
+    <string name="label_nutrients">Nutrients</string>
 
 </resources>

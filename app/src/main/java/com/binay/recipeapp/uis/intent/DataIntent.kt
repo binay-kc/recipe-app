@@ -21,4 +21,7 @@ sealed class DataIntent {
         val recipe: SearchedRecipe,
         val isToFavorite: Boolean
     ) : DataIntent()
+
+    data class SearchRecipesByNutrients(val query: String) : DataIntent()
+
 }

@@ -24,6 +24,8 @@ import com.binay.recipeapp.uis.view.RecipeRecyclerAdapter
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
+import com.google.android.material.chip.ChipGroup
+import com.google.android.material.chip.ChipGroup.OnCheckedStateChangeListener
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -33,6 +35,9 @@ class SearchFragment : Fragment() {
     private lateinit var mViewModel: MainViewModel
     private lateinit var mAdapter: SearchedRecipeAdapter
     private var mListener: SearchListener? = null
+
+    //    Use this to search by recipes or nutrients
+    private var isToSearchByRecipes = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,6 +62,7 @@ class SearchFragment : Fragment() {
 
     private fun initView() {
         initViewModel()
+        initSearchBy()
 
         binding.rvSearchRecipes.setHasFixedSize(true)
         binding.rvSearchRecipes.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -95,10 +101,20 @@ class SearchFragment : Fragment() {
                     } else {
                         mAdapter.setRecipes(ArrayList())
                     }
-                }, 700)
+                }, 900)
                 return false
             }
         })
+    }
+
+    private fun initSearchBy() {
+        val layoutSearchFilter = binding.layoutSearchFilter
+        layoutSearchFilter.cgSearchBy.setOnCheckedStateChangeListener { _, checkedId ->
+            val selectedChip = checkedId.contains(layoutSearchFilter.chipRecipes.id)
+            isToSearchByRecipes = selectedChip
+            val query = binding.svRecipe.query.toString()
+            if (query.isNotEmpty()) searchRecipe(query)
+        }
     }
 
     private fun initViewModel() {
@@ -128,6 +144,10 @@ class SearchFragment : Fragment() {
                         mListener?.refreshHomeFragment()
                     }
 
+                    is DataState.SearchRecipesByNutrients -> {
+                        mAdapter.setRecipes(it.searchedRecipes)
+                    }
+
                     else -> {
 
                     }
@@ -138,11 +158,15 @@ class SearchFragment : Fragment() {
 
     private fun searchRecipe(query: String) {
         lifecycleScope.launch {
-            mViewModel.dataIntent.send(
-                DataIntent.SearchRecipe(
-                    query
+            if (isToSearchByRecipes) {
+                mViewModel.dataIntent.send(
+                    DataIntent.SearchRecipe(
+                        query
+                    )
                 )
-            )
+            } else {
+                mViewModel.dataIntent.send(DataIntent.SearchRecipesByNutrients(query))
+            }
         }
     }
 
