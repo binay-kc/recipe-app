@@ -28,6 +28,9 @@ class MainViewModel(private val mRepository : MainRepository) : ViewModel() {
                     is DataIntent.FetchRecipeData -> fetchData(
                         it.tag
                     )
+                    is DataIntent.FetchRecipeDetail -> fetchRecipeDetailData(
+                        it.recipeId
+                    )
                 }
             }
         }
@@ -42,6 +45,19 @@ class MainViewModel(private val mRepository : MainRepository) : ViewModel() {
             }catch (e: Exception){
                 // TODO: Add proper way to parse error message and display to users
                 DataState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun fetchRecipeDetailData(recipeID: Int) {
+        viewModelScope.launch {
+            Log.e("viewmodel", "fetchRecipeDetailData: " )
+            dataState.value = DataState.Loading
+            dataState.value = try {
+                val recipeDetail = mRepository.getRecipeDetail(recipeID)
+                DataState.RecipeDetail(recipeDetail)
+            } catch (e: Exception) {
+                DataState.Error(e.message)
             }
         }
     }

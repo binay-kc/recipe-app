@@ -5,4 +5,8 @@ sealed class DataIntent{
     data class FetchRecipeData(
         val tag: String
     ) : DataIntent()
+
+    data class FetchRecipeDetail (
+        val recipeId: Int
+    ): DataIntent()
 }

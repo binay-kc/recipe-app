@@ -24,7 +24,7 @@
                 android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:scaleType="fitXY"/>
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/recipe_name"
