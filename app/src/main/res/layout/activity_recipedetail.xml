@@ -13,7 +13,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="320dp"
             android:theme="@style/Theme.RecipeApp.AppBarOverlay">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -26,13 +26,14 @@
                 <ImageView
                     android:id="@+id/recipeImage"
                     android:layout_width="match_parent"
-                    android:layout_height="320dp"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
                     app:layout_collapseMode="parallax" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="320dp"
+                    android:layout_height="match_parent"
                     android:background="@drawable/text_gradient_bg"/>
 
                 <TextView

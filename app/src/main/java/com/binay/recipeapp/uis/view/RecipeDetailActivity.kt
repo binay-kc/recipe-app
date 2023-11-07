@@ -121,7 +121,7 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
         mBinding.recipeName.text = recipeData.title
 
         var mealType = ""
-        for (cuisine in recipeData.cuisines) {
+        for (cuisine in recipeData.cuisines!!) {
             mealType += cuisine.plus(", ")
         }
         mBinding.mealType.text = mealType
@@ -138,7 +138,7 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
         mBinding.recipeDetail.timerTag.text = recipeData.readyInMinutes.toString() + " mins"
         mBinding.recipeDetail.servingTag.text = recipeData.servings.toString() + " servings"
 
-        for (nutrients in recipeData.nutrition.nutrients) {
+        for (nutrients in recipeData.nutrition?.nutrients!!) {
             if (nutrients.name.equals("calories", true)) {
                 mBinding.recipeDetail.calorieTag.text = nutrients.amount.toString() + " " +nutrients.unit + "/serving"
                 break

@@ -22,6 +22,12 @@
     <color name="toolbar_background">#B81C55</color>
     <color name="unit_converter_top_bg">#e76f51</color>
     <color name="unit_converter_bottom_bg">#BCB8B9</color>
+    <color name="favorite_checked">#e14a24</color>
     <color name="app_bg">#EBE9EA</color>
+    <color name="chip_unselected_chip_color">#FFFFFF</color>
+    <color name="chip_selected_chip_color">#2a9d8f</color>
+
+    <color name="chip_unselected_text_color">#ff000000</color>
+    <color name="chip_selected_text_color">#FFFFFF</color>
 
 </resources>

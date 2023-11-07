@@ -56,7 +56,7 @@ class InstructionsFragment: Fragment() {
 
     private fun populateInstructions(items: List<AnalyzedInstructions>) {
         Log.e("TAG", "populateInstructions: " + items)
-        val mAdapter = InstructionsRecyclerAdapter(requireContext(), items[0].steps)
+        val mAdapter = items[0].steps?.let { InstructionsRecyclerAdapter(requireContext(), it) }
         mBinding.recyclerView.adapter = mAdapter
     }
 

@@ -14,7 +14,7 @@ class ViewModelFactory(private val apiHelper: ApiHelper, private val mContext: C
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
-            return MainViewModel(MainRepository(apiHelper)) as T
+            return MainViewModel(MainRepository(apiHelper), mContext) as T
         } else if (modelClass.isAssignableFrom(UnitConverterViewModel::class.java)) {
             return UnitConverterViewModel(UnitConverterRepository(mContext)) as T
         }

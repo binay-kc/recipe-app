@@ -1,52 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clipToPadding="false"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:clipToPadding="false">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardUseCompatPadding="true"
         android:clipToPadding="false"
         app:cardCornerRadius="15dp"
-        app:cardElevation="2dp">
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
-                
+            android:orientation="vertical">
+
             <ImageView
                 android:id="@+id/recipe_image"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:scaleType="centerCrop"/>
-
-            <TextView
-                android:id="@+id/recipe_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                android:paddingTop="8dp"
-                android:paddingHorizontal="10dp"
-                style="@style/Header.Text"/>
+                android:scaleType="centerCrop"
+                android:adjustViewBounds="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
 
+                <TextView
+                    android:id="@+id/recipe_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:minLines="2"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:paddingTop="8dp"
+                    android:paddingHorizontal="10dp"
+                    style="@style/Header.Text"/>
+
+                <CheckBox
+                    android:id="@+id/cb_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:foregroundGravity="center"
+                    android:layout_gravity="end"
+                    android:button="@drawable/fav_selector"
+                    android:buttonTint="@color/favorite_checked"
+                    android:checked="true"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
                 <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
                     android:padding="5dp"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_gravity="center_vertical"
                     android:foregroundGravity="center"
                     android:src="@drawable/icon_timer" />
 
@@ -54,9 +77,8 @@
                     android:id="@+id/recipe_calorie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="10dp"
-                    android:textSize="14sp" />
+                    android:layout_gravity="center_vertical"
+                    android:textSize="11sp" />
 
             </LinearLayout>
 
