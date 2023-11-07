@@ -16,10 +16,20 @@
         <!-- You can specify other text attributes here, like text color, text size, etc. -->
     </style>
 
+    <style name="AppText.Tab" parent="android:TextAppearance">
+        <item name="android:fontFamily">@font/pt_sans_regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">15sp</item>
+        <!-- You can specify other text attributes here, like text color, text size, etc. -->
+    </style>
+
     <style name="Header.Text" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/pt_sans_bold</item>
         <item name="android:textSize">16sp</item>
         <!-- You can specify other text attributes here, like text color, text size, etc. -->
     </style>
+
+    <style name="Theme.RecipeApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
 </resources>

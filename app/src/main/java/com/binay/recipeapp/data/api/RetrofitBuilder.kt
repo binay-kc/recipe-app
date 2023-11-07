@@ -12,7 +12,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitBuilder {
 
     private const val BASE_URL = "https://api.spoonacular.com/"
-    private const val API_KEY = "a92ba302332043249daf5d02b0620791"
+//    private const val API_KEY = "a92ba302332043249daf5d02b0620791"
+    private const val API_KEY = "3324cb9d269e41099407750992f1a9fe"
 
     private fun getRetrofit() = Retrofit.Builder()
         .baseUrl(BASE_URL)

@@ -10,11 +10,12 @@ interface ApiService {
     @GET("recipes/random")
     suspend fun getData (
         @Query("tags") tags: String,
-        @Query("number") number: Int = 15
+        @Query("number") number: Int = 30
     ): RecipeResponseData
 
     @GET("recipes/{id}/information")
     suspend fun getRecipeDetail(
-        @Path("id") id: Int
+        @Path("id") id: Int,
+        @Query("includeNutrition") number: Boolean = true
     ): RecipeData
 }

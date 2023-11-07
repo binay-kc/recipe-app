@@ -1,6 +1,7 @@
 package com.binay.recipeapp.uis.view
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -32,5 +33,11 @@ class RecipeRecyclerAdapter(private val context: Context, private val recipeList
             Picasso.with(context).load(recipeList[position].image).into(holder.recipeImage)
 
         holder.calories.text = "" + recipeList[position].readyInMinutes + " mins"
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, RecipeDetailActivity::class.java)
+            intent.putExtra("recipe_id", recipeList[position].id)
+            context.startActivity(intent)
+        }
     }
 }

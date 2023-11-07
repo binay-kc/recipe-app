@@ -13,7 +13,7 @@
         app:cardUseCompatPadding="true"
         android:clipToPadding="false"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp">
+        app:cardElevation="2dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,20 +33,32 @@
                 android:textSize="18sp"
                 android:maxLines="2"
                 android:ellipsize="end"
-                android:paddingTop="10dp"
+                android:paddingTop="8dp"
                 android:paddingHorizontal="10dp"
                 style="@style/Header.Text"/>
-            
-            <TextView
-                android:id="@+id/recipe_calorie"
-                android:layout_width="wrap_content"
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="10dp"
-                android:paddingHorizontal="10dp"
-                style="@style/AppText"
-                android:textSize="14sp"
-                android:textColor="@color/secondary_color"/>
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="5dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:foregroundGravity="center"
+                    android:src="@drawable/icon_timer" />
+
+                <TextView
+                    android:id="@+id/recipe_calorie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="10dp"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
