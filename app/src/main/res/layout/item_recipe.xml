@@ -30,6 +30,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
                 <TextView
@@ -41,17 +43,15 @@
                     android:minLines="2"
                     android:maxLines="2"
                     android:ellipsize="end"
-                    android:paddingTop="8dp"
+                    android:gravity="center_vertical"
                     android:paddingHorizontal="10dp"
                     style="@style/Header.Text"/>
 
                 <CheckBox
                     android:id="@+id/cb_favorite"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:gravity="center"
-                    android:foregroundGravity="center"
-                    android:layout_gravity="end"
                     android:button="@drawable/fav_selector"
                     android:buttonTint="@color/favorite_checked"
                     android:checked="true"/>
@@ -62,6 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:orientation="horizontal" >
 
                 <ImageView
@@ -69,7 +70,6 @@
                     android:layout_height="25dp"
                     android:padding="5dp"
                     android:layout_marginHorizontal="5dp"
-                    android:layout_gravity="center_vertical"
                     android:foregroundGravity="center"
                     android:src="@drawable/icon_timer" />
 
@@ -77,7 +77,6 @@
                     android:id="@+id/recipe_calorie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
                     android:textSize="11sp" />
 
             </LinearLayout>

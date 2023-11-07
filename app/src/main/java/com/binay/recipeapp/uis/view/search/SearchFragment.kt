@@ -100,7 +100,7 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(p0: String?): Boolean {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    if (!p0.isNullOrEmpty()) {
+                    if (!p0.isNullOrEmpty() && p0.length >= 3) {
                         searchRecipe(p0)
                     } else {
                         mAdapter.setRecipes(ArrayList())
@@ -116,12 +116,11 @@ class SearchFragment : Fragment() {
         layoutSearchFilter.cgSearchBy.setOnCheckedStateChangeListener { _, checkedId ->
             val selectedChip = checkedId.contains(layoutSearchFilter.chipRecipes.id)
             isToSearchByRecipes = selectedChip
+            binding.svRecipe.setQuery("", false)
             if (isToSearchByRecipes)
                 binding.svRecipe.queryHint = getString(R.string.recipe_search_hint)
             else
                 binding.svRecipe.queryHint = getString(R.string.ingredient_search_hint)
-            val query = binding.svRecipe.query.toString()
-            if (query.isNotEmpty()) searchRecipe(query)
         }
     }
 

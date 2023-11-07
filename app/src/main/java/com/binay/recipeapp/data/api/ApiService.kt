@@ -23,11 +23,13 @@ interface ApiService {
 
     @GET("recipes/complexSearch")
     suspend fun searchRecipes(
-        @Query("query") query: String
+        @Query("query") query: String,
+        @Query("number") number: Int = 30
     ): SearchedRecipeData
 
     @GET("recipes/findByIngredients")
     suspend fun searchRecipesByIngredients(
-        @Query("ingredients") query: String
+        @Query("ingredients") query: String,
+        @Query("number") number: Int = 30
     ): ArrayList<SearchedRecipe>
 }
