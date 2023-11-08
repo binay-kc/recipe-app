@@ -117,10 +117,13 @@ class SearchFragment : Fragment() {
             val selectedChip = checkedId.contains(layoutSearchFilter.chipRecipes.id)
             isToSearchByRecipes = selectedChip
             binding.svRecipe.setQuery("", false)
-            if (isToSearchByRecipes)
+            if (isToSearchByRecipes) {
+                binding.note.visibility = View.GONE
                 binding.svRecipe.queryHint = getString(R.string.recipe_search_hint)
-            else
+            } else {
+                binding.note.visibility = View.VISIBLE
                 binding.svRecipe.queryHint = getString(R.string.ingredient_search_hint)
+            }
         }
     }
 

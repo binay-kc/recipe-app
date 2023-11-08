@@ -5,7 +5,7 @@
     <string name="nav_favorite">Favorites</string>
     <string name="recipe_search_hint">Enter recipe name</string>
     <string name="ingredient_search_hint">Enter ingredients name</string>
-    <string name="note">Note: In case of ingredients, you can enter multiple ingredients separated by comma (,)</string>
+    <string name="note">Note: You can enter multiple ingredients separated by comma (,)</string>
 
     <string name="unit_converter">Unit Converter</string>
     <string name="label_unit_converter">Unit Converter</string>
