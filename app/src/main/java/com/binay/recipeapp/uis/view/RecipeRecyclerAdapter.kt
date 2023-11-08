@@ -50,6 +50,7 @@ class RecipeRecyclerAdapter(
 
         holder.calories.text = "${recipe.readyInMinutes} mins"
 
+        holder.cbFavorite.setOnCheckedChangeListener(null)
         holder.cbFavorite.isChecked = recipe.isFavorite ?: false
 
         holder.cbFavorite.setOnCheckedChangeListener(object : OnCheckedChangeListener,
@@ -70,6 +71,9 @@ class RecipeRecyclerAdapter(
 
     }
 
+    override fun onViewRecycled(holder: RecipeViewHolder) {
+        super.onViewRecycled(holder)
+    }
     fun removeRecipe(recipe: RecipeData) {
         val position = recipeList.indexOf(recipe)
         recipeList.remove(recipe)
