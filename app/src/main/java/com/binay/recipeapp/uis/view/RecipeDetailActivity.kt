@@ -122,9 +122,12 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
 
         var mealType = ""
         for (cuisine in recipeData.cuisines!!) {
-            mealType += cuisine.plus(", ")
+            mealType += cuisine.plus(", ") //-2 below coz i added 2 characters here
         }
-        mBinding.mealType.text = mealType
+
+        if (mealType.isNotEmpty())
+            mBinding.mealType.text = mealType.substring(0, mealType.length - 2)
+
         Picasso.with(this).load(recipeData.image).into(mBinding.recipeImage)
 
         if (recipeData.vegetarian == true) {

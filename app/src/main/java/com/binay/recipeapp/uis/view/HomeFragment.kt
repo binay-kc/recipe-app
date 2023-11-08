@@ -16,6 +16,7 @@ import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
+import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.databinding.FragmentHomeBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
@@ -34,6 +35,7 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
     private lateinit var viewModel: MainViewModel
 
     private var mListener: HomeFragmentListener? = null
+    private var responseData: RecipeResponseData? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,11 +111,16 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
             viewModel.dataState.collect {
                 when (it) {
                     is DataState.Loading -> {
-
+                        Log.e("TAG", "initViewModel: loading", )
+                        if (responseData == null)
+                            binding.progressBar.visibility = View.VISIBLE
                     }
 
                     is DataState.ResponseData -> {
+                        binding.progressBar.visibility = View.GONE
+                        binding.recipeRecycler.visibility = View.VISIBLE
                         Log.d("haancha", "initViewModel: " + it.recipeResponseData)
+                        responseData = it.recipeResponseData
                         recipeAdapter.setRecipes(it.recipeResponseData.recipes)
                     }
 
@@ -153,8 +160,10 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
     override fun categoryClick(position: Int) {
 
         adapter.updateAdapter(position)
+        binding.recipeRecycler.visibility = View.GONE
         val cuisines = resources.getStringArray(R.array.category_array)
 
+        responseData = null
         when (position) {
             0 -> {
                 fetchData("")

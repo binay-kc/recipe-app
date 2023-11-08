@@ -137,7 +137,7 @@ class SearchFragment : Fragment() {
             mViewModel.dataState.collect {
                 when (it) {
                     is DataState.Loading -> {
-
+                        binding.progressBar.visibility = View.VISIBLE
                     }
 
                     is DataState.ResponseData -> {
@@ -145,6 +145,7 @@ class SearchFragment : Fragment() {
                     }
 
                     is DataState.SearchRecipes -> {
+                        binding.progressBar.visibility = View.GONE
                         val recipes = it.searchRecipeData.results ?: ArrayList()
                         mAdapter.setRecipes(recipes)
                     }
@@ -155,6 +156,7 @@ class SearchFragment : Fragment() {
                     }
 
                     is DataState.SearchRecipesByNutrients -> {
+                        binding.progressBar.visibility = View.GONE
                         mAdapter.setRecipes(it.searchedRecipes)
                     }
 

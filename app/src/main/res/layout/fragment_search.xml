@@ -52,8 +52,18 @@
         android:paddingHorizontal="5dp"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/note"
+        app:layout_constraintTop_toBottomOf="@id/progress_bar"
         tools:itemCount="2"
         tools:listitem="@layout/item_recipe" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/note"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
