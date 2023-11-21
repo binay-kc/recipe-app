@@ -13,10 +13,11 @@ import com.binay.recipeapp.data.model.AnalyzedInstructions
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.databinding.FragmentInstructionsBinding
 
-class InstructionsFragment: Fragment() {
+class IngredientsFragment: Fragment(), IngredientsRecyclerAdapter.IngredientClickListener {
 
     private lateinit var mBinding: FragmentInstructionsBinding
     private lateinit var viewModel: MyViewModel
+    private var groceryList: MutableList<ExtendedIngredients> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,8 +37,8 @@ class InstructionsFragment: Fragment() {
 
     private fun initViewModel() {
         viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
-        viewModel.instructions.observe(viewLifecycleOwner) { items ->
-            populateInstructions(items)
+        viewModel.ingredients.observe(viewLifecycleOwner) { items ->
+            populateIngredients(items)
         }
     }
 
@@ -46,10 +47,17 @@ class InstructionsFragment: Fragment() {
         mBinding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
-    private fun populateInstructions(items: List<AnalyzedInstructions>) {
-        Log.e("TAG", "populateInstructions: " + items)
-        val mAdapter = items[0].steps?.let { InstructionsRecyclerAdapter(it) }
+    private fun populateIngredients(items: List<ExtendedIngredients>) {
+        val mAdapter = IngredientsRecyclerAdapter(requireContext(), items, this)
         mBinding.recyclerView.adapter = mAdapter
     }
 
+    override fun onIngredientSelected(ingredient: ExtendedIngredients, isChecked: Boolean) {
+        if (isChecked) {
+            groceryList.add(ingredient)
+        } else groceryList.remove(ingredient)
+
+        viewModel.isChecked.value = groceryList.isNotEmpty()
+        viewModel.groceryList.value = groceryList
+    }
 }

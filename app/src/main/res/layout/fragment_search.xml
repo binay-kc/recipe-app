@@ -18,7 +18,7 @@
         android:layout_marginTop="6dp"
         android:layout_marginHorizontal="15dp"
         app:cardCornerRadius="30dp"
-        app:cardElevation="5dp"
+        app:cardElevation="2dp"
         app:layout_constraintTop_toBottomOf="@id/layout_search_filter">
 
         <androidx.appcompat.widget.SearchView
@@ -28,7 +28,8 @@
             android:searchIcon="@drawable/icon_search"
             app:iconifiedByDefault="false"
             app:queryBackground="@android:color/transparent"
-            app:queryHint="@string/recipe_search_hint" />
+            app:queryHint="@string/recipe_search_hint"
+            android:theme="@style/AppSearchView"/>
 
     </androidx.cardview.widget.CardView>
 

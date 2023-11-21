@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.CheckBox
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -13,9 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.widget.ViewPager2
 import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
@@ -27,7 +27,6 @@ import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
@@ -89,6 +88,12 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
     private fun initViewModel() {
 
         fragmentViewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        fragmentViewModel.isChecked.observe(this) {
+            if (it)
+                mBinding.addToListButton.visibility = View.VISIBLE
+            else
+                mBinding.addToListButton.visibility = View.GONE
+        }
 
         viewModel = ViewModelProvider(
             this,
@@ -120,6 +125,13 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
         mBinding.toolbarTitle.text = recipeData.title
         mBinding.recipeName.text = recipeData.title
 
+        mBinding.addToListButton.setOnClickListener {
+            fragmentViewModel.groceryList.observe(this) {items ->
+                Log.e("grocery", "populateView: " +items.size)
+                fragmentViewModel.groceryList.removeObservers(this)
+            }
+        }
+
         var mealType = ""
         for (cuisine in recipeData.cuisines!!) {
             mealType += cuisine.plus(", ") //-2 below coz i added 2 characters here
@@ -148,8 +160,11 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
             }
         }
 
+        val fragments: ArrayList<Fragment> = ArrayList()
+        fragments.add(IngredientsFragment())
+        fragments.add(InstructionsFragment())
         mBinding.recipeDetail.tabLayout.addOnTabSelectedListener(this)
-        val pagerAdapter = MyPagerAdapter(this)
+        val pagerAdapter = MyPagerAdapter(this, fragments)
         mBinding.recipeDetail.viewPager.adapter = pagerAdapter
 
         TabLayoutMediator(mBinding.recipeDetail.tabLayout, mBinding.recipeDetail.viewPager) { tab, position ->
@@ -172,11 +187,10 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
 
         when(tab.position) {
             0 -> { //ingredients
-                fragmentViewModel.whichData.value = "ingredient"
                 fragmentViewModel.ingredients.value = recipeData.extendedIngredients
             }
             else -> { //instructions
-                fragmentViewModel.whichData.value = "instruction"
+                mBinding.addToListButton.visibility = View.GONE
                 fragmentViewModel.instructions.value = recipeData.analyzedInstructions
             }
         }
@@ -191,20 +205,23 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
     }
 }
 
-class MyPagerAdapter(fragmentActivity: FragmentActivity?) :
+class MyPagerAdapter(fragmentActivity: FragmentActivity?, fragments: ArrayList<Fragment>) :
     FragmentStateAdapter(fragmentActivity!!) {
 
+    private val fragments = fragments
+
     override fun createFragment(position: Int): Fragment {
-        return InstructionsFragment()
+        return fragments[position]
     }
 
     override fun getItemCount(): Int {
-        return 2
+        return fragments.size
     }
 }
 
 class MyViewModel : ViewModel() {
-    val whichData = MutableLiveData<String>()
     val ingredients = MutableLiveData<List<ExtendedIngredients>>()
     val instructions = MutableLiveData<List<AnalyzedInstructions>>()
+    val isChecked = MutableLiveData<Boolean>()
+    val groceryList = MutableLiveData<List<ExtendedIngredients>>()
 }

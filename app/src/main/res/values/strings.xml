@@ -3,8 +3,8 @@
     <string name="nav_converter">Unit Converter</string>
     <string name="nav_search">Search</string>
     <string name="nav_favorite">Favorites</string>
-    <string name="recipe_search_hint">Enter recipe name</string>
-    <string name="ingredient_search_hint">Enter ingredients name</string>
+    <string name="recipe_search_hint">Enter recipe name [min. 3 chars]</string>
+    <string name="ingredient_search_hint">Enter ingredients name [min. 3 chars]</string>
     <string name="note">Note: You can enter multiple ingredients separated by comma (,)</string>
 
     <string name="unit_converter">Unit Converter</string>
