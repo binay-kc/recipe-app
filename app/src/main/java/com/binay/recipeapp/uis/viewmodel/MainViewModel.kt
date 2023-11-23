@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
+import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.data.repository.MainRepository
@@ -60,6 +61,12 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                     )
 
                     is DataIntent.SearchRecipesByNutrients -> searchRecipesByNutrients(it.query)
+
+                    is DataIntent.FetchShoppingListData -> fetchShoppingListData()
+
+                    is DataIntent.AddToShoppingList -> addToShoppingList(
+                        it.ingredients
+                    )
 
                 }
             }
@@ -214,6 +221,30 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 DataState.SearchRecipesByNutrients(searchedRecipes)
             } catch (e: Exception) {
                 // TODO: Add proper way to parse error message and display to users
+                DataState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun fetchShoppingListData() {
+        dataState.value = try {
+            val ingredientData = db.ingredientDao().getAllIngredients()
+            DataState.IngredientResponse(ingredientData.toCollection(ArrayList()))
+        } catch (e: Exception) {
+            DataState.Error(e.localizedMessage)
+        }
+    }
+
+    private fun addToShoppingList(ingredients: List<ExtendedIngredients>) {
+        viewModelScope.launch {
+            dataState.value = DataState.Loading
+            dataState.value = try {
+                val ingredientDao = db.ingredientDao()
+                ingredientDao.addAllIngredients(ingredients)
+                DataState.AddToShoppingList(ingredients)
+            } catch (e: Exception) {
+                // TODO: Add proper way to parse error message and display to users
+                Log.e("Error ", "" + e.localizedMessage)
                 DataState.Error(e.localizedMessage)
             }
         }

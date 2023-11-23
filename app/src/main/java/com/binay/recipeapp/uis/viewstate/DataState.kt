@@ -1,6 +1,7 @@
 package com.binay.recipeapp.uis.viewstate
 
 
+import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.data.model.SearchedRecipe
@@ -22,4 +23,8 @@ sealed class DataState {
     data class SearchRecipes(val searchRecipeData: SearchedRecipeData) : DataState()
 
     data class SearchRecipesByNutrients(val searchedRecipes: ArrayList<SearchedRecipe>) : DataState()
+
+    data class IngredientResponse(val ingredients: ArrayList<ExtendedIngredients>): DataState()
+
+    data class AddToShoppingList(val ingredients: List<ExtendedIngredients>): DataState()
 }

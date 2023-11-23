@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.intent
 
+import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
 
@@ -27,4 +28,8 @@ sealed class DataIntent {
     ) : DataIntent()
 
     data class SearchRecipesByNutrients(val query: String) : DataIntent()
+
+    object FetchShoppingListData : DataIntent()
+
+    data class AddToShoppingList(val ingredients: List<ExtendedIngredients>): DataIntent()
 }
