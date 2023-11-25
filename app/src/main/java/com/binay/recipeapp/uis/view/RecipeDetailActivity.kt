@@ -191,7 +191,9 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
             }
             else -> { //instructions
                 mBinding.addToListButton.visibility = View.GONE
-                fragmentViewModel.instructions.value = recipeData.analyzedInstructions
+                val instructions = recipeData.analyzedInstructions
+                if(!instructions.isNullOrEmpty()) instructions[0].readyInMinutes = recipeData.readyInMinutes
+                fragmentViewModel.instructions.value = instructions
             }
         }
     }
