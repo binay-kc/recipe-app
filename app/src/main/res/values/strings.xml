@@ -39,5 +39,7 @@
     <string name="label_search_by_colon">Search By:</string>
     <string name="label_recipes">Recipes</string>
     <string name="label_nutrients">Ingredients</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_see_detail">See Detail</string>
 
 </resources>

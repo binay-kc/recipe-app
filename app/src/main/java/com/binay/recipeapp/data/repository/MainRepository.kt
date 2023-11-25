@@ -13,4 +13,6 @@ class MainRepository(private val apiHelper: ApiHelper) {
 
     suspend fun searchRecipesByIngredients(query: String) =
         apiHelper.searchRecipesByIngredients(query)
+
+    suspend fun getRandomRecipe() = apiHelper.getRandomRecipe()
 }

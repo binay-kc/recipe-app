@@ -101,6 +101,16 @@ class MainActivity : AppCompatActivity(),
             tab.text = ""
             tab.icon = ContextCompat.getDrawable(this, imageList[position])
         }.attach()
+
+        initRandomRecipeView()
+    }
+
+
+    private fun initRandomRecipeView() {
+        RandomRecipeFragment().show(
+            supportFragmentManager,
+            RandomRecipeFragment::class.java.canonicalName
+        )
     }
 
     class MyPagerAdapter(fragmentActivity: FragmentActivity?, fragments: List<Fragment>) :

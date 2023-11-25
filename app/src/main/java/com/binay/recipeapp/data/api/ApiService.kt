@@ -32,4 +32,9 @@ interface ApiService {
         @Query("ingredients") query: String,
         @Query("number") number: Int = 30
     ): ArrayList<SearchedRecipe>
+
+    @GET("recipes/random")
+    suspend fun getRandomRecipe(
+        @Query("number") number: Int = 1
+    ): RecipeResponseData
 }
