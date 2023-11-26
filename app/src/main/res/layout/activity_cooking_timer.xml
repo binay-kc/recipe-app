@@ -2,21 +2,50 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".uis.view.CookingTimerFragment">
+    tools:context=".uis.view.CookingTimerActivity">
+
+    <FrameLayout
+        android:id="@+id/fl_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/item_toolbar" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/back_btn"
+            android:layout_width="40dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@string/app_name"
+            android:padding="5dp"
+            android:src="@drawable/icon_back"
+            android:translationZ="90dp" />
+
+    </FrameLayout>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/cpv_timer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:progress="50"
+        android:layout_height="0dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="100dp"
+        android:progress="1"
         app:indicatorColor="@color/circular_progress_indicator_color"
+        app:indicatorDirectionCircular="counterclockwise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:trackColor="@color/circular_progress_track_color" />
+        app:layout_constraintTop_toBottomOf="@id/fl_toolbar"
+        app:trackColor="@color/circular_progress_track_color"
+        app:trackCornerRadius="1dp"
+        app:trackThickness="1dp" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="wrap_content"
@@ -52,6 +81,7 @@
                 style="@style/timer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/timer_margin_start"
                 android:text="@string/label_colon" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
@@ -85,6 +115,7 @@
                 style="@style/timer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/timer_margin_start"
                 android:text="@string/label_colon" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -67,11 +68,12 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
         }
 
         mBinding.btnStartCooking.setOnClickListener {
-            if (readyInMinutes != null) CookingTimerFragment.newInstance(readyInMinutes!!)
-                .show(supportFragmentManager, CookingTimerFragment.TAG)
+            if (readyInMinutes != null) {
+                val intent = Intent(this, CookingTimerActivity::class.java)
+                intent.putExtra("readyInMinutes",readyInMinutes)
+                startActivity(intent)
+            }
         }
-
-
 
         mBinding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val maxScroll = appBarLayout.totalScrollRange
