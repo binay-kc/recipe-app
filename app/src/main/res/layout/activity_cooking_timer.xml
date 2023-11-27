@@ -17,17 +17,6 @@
             android:id="@+id/toolbar"
             layout="@layout/item_toolbar" />
 
-        <ImageView
-            android:id="@+id/back_btn"
-            android:layout_width="40dp"
-            android:layout_height="35dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="10dp"
-            android:contentDescription="@string/app_name"
-            android:padding="5dp"
-            android:src="@drawable/icon_back"
-            android:translationZ="90dp" />
-
     </FrameLayout>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -39,7 +28,7 @@
         android:progress="1"
         app:indicatorColor="@color/circular_progress_indicator_color"
         app:indicatorDirectionCircular="counterclockwise"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_cancel_cooking"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fl_toolbar"
@@ -148,5 +137,18 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/btn_cancel_cooking"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="20dp"
+        android:backgroundTint="@color/secondary_color"
+        android:text="@string/label_cancel"
+        android:textColor="@color/white"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

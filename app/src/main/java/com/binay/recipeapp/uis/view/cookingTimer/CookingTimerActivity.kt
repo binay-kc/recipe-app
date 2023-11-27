@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
-import androidx.activity.addCallback
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.ActivityCookingTimerBinding
 
@@ -37,9 +36,20 @@ class CookingTimerActivity : AppCompatActivity() {
         initView()
     }
 
+    /**
+     * Initializes view
+     */
     private fun initView() {
-        mBinding.toolbar.toolbarTitle.text = getString(R.string.label_timer)
-        mBinding.backBtn.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        mBinding.toolbar.let {
+            it.toolbarTitle.text = getString(R.string.label_timer)
+            it.backBtn.let { ivBack ->
+                ivBack.visibility = View.VISIBLE
+                ivBack.setOnClickListener {
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        }
+
         if (timeInMinutes != null) {
             startAlarm()
             val hours = timeInMinutes!! / 60
@@ -56,9 +66,20 @@ class CookingTimerActivity : AppCompatActivity() {
                     override fun onTick(p0: Long) {
                         countDownInterval += 1
                         val totalSecondsRemaining = p0 / 1000
-                        val totalMinutesRemaining = totalSecondsRemaining / 60
+                        val totalHoursRemaining = totalSecondsRemaining / (60 * 60)
+                        val totalMinutesRemaining = if (totalHoursRemaining > 0) {
+                            (totalSecondsRemaining / 60) - (totalHoursRemaining * 60)
+                        } else {
+                            totalSecondsRemaining / 60
+                        }
+
                         val secondsRemainingToDisplay =
-                            totalSecondsRemaining - (totalMinutesRemaining * 60)
+                            if (totalHoursRemaining > 0) {
+                                totalSecondsRemaining - (totalHoursRemaining * 60 * 60) - (totalMinutesRemaining * 60)
+                            } else {
+                                totalSecondsRemaining - (totalMinutesRemaining * 60)
+                            }
+
                         val progressPercentage = (100 * countDownInterval) / progressMaxLimit
                         mBinding.cpvTimer.progress = progressPercentage
                         Log.e("$countDownInterval Progress", " $progressPercentage%")
@@ -67,13 +88,12 @@ class CookingTimerActivity : AppCompatActivity() {
                             " Minutes: $totalMinutesRemaining Seconds: $totalSecondsRemaining"
                         )
                         if (!isAlreadyLessThanHour) {
-                            val hoursRemaining = totalMinutesRemaining / 60
-                            if (hoursRemaining <= 0) {
+                            if (totalHoursRemaining <= 0) {
                                 mBinding.tvHourTenth.text = getString(R.string.label_default_hour)
                                 mBinding.tvHourZeroth.text = getString(R.string.label_default_hour)
                             } else {
-                                val tenthHr = hoursRemaining / 10
-                                val zerothHr = hoursRemaining % 10
+                                val tenthHr = totalHoursRemaining / 10
+                                val zerothHr = totalHoursRemaining % 10
                                 mBinding.tvHourTenth.text = tenthHr.toString()
                                 mBinding.tvHourZeroth.text = zerothHr.toString()
                             }
@@ -108,9 +128,16 @@ class CookingTimerActivity : AppCompatActivity() {
                     }
 
                 }.start()
+
+            mBinding.btnCancelCooking.setOnClickListener {
+
+            }
         }
     }
 
+    /**
+     * Sends call to AlarmReceiver to play sound
+     */
     private fun startAlarm() {
         val intent = Intent(this, AlarmReceiver::class.java)
         val timeWhenAlarmIsToBeSet = System.currentTimeMillis() + (timeInMinutes!! * 60 * 1000)
@@ -127,6 +154,9 @@ class CookingTimerActivity : AppCompatActivity() {
         Log.e("Alarm setting at ", " $timeWhenAlarmIsToBeSet")
     }
 
+    /**
+     * Cancels alarm
+     */
     private fun cancelAlarm() {
         val intent = Intent(this, AlarmReceiver::class.java)
         val timeWhenAlarmIsToBeSet = System.currentTimeMillis() + (timeInMinutes!! * 60 * 1000)
@@ -141,6 +171,9 @@ class CookingTimerActivity : AppCompatActivity() {
         alarmManager.cancel(pendingIntent)
     }
 
+    /**
+     * Cancel alarm and timer if already present
+     */
     override fun onStop() {
         super.onStop()
         cancelAlarm()
