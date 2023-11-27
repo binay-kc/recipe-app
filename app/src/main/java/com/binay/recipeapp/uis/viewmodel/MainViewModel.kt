@@ -68,6 +68,10 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                         it.ingredients
                     )
 
+                    is DataIntent.RemoveFromShoppingList -> removeFromShoppingList(
+                        it.ingredients
+                    )
+
                 }
             }
         }
@@ -244,6 +248,21 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 DataState.AddToShoppingList(ingredients)
             } catch (e: Exception) {
                 // TODO: Add proper way to parse error message and display to users
+                Log.e("Error ", "" + e.localizedMessage)
+                DataState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun removeFromShoppingList(ingredients: ExtendedIngredients) {
+        viewModelScope.launch {
+            dataState.value = DataState.Loading
+            dataState.value = try {
+                val ingredientDao = db.ingredientDao()
+                ingredientDao.removeIngredient(ingredients)
+                val updatedList = ingredientDao.getAllIngredients()
+                DataState.IngredientResponse(updatedList.toCollection(ArrayList()))
+            } catch (e: Exception) {
                 Log.e("Error ", "" + e.localizedMessage)
                 DataState.Error(e.localizedMessage)
             }

@@ -39,7 +39,8 @@
                 android:background="@null"
                 android:padding="3dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon_delete" />
+                android:src="@drawable/icon_delete"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/clear_all"

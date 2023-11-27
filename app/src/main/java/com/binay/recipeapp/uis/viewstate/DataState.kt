@@ -27,4 +27,6 @@ sealed class DataState {
     data class IngredientResponse(val ingredients: ArrayList<ExtendedIngredients>): DataState()
 
     data class AddToShoppingList(val ingredients: List<ExtendedIngredients>): DataState()
+
+    data class RemoveFromShoppingList(val ingredients: ExtendedIngredients): DataState()
 }

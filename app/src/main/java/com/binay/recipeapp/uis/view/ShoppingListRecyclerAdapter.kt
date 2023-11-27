@@ -46,13 +46,13 @@ class ShoppingListRecyclerAdapter(
         val item = ingredientList[position]
         var count = item.count
 
+        holder.checkbox.isChecked = false
         holder.counter.setText(item.count.toString())
-
         holder.title.text = item.name
         Picasso.with(context).load("https://spoonacular.com/cdn/ingredients_100x100/".plus(item.image)).into(holder.image)
 
         holder.decrease.setOnClickListener {
-            if (count > 1) count--
+            if (count > 1) count-- //default count is 1. No item's count can be 0
 
             item.count = count
             holder.counter.setText(item.count.toString())
@@ -61,7 +61,7 @@ class ShoppingListRecyclerAdapter(
         }
 
         holder.increase.setOnClickListener {
-            if (count < 999) count++
+            if (count < 100) count++ //limit set to 100
 
             item.count = count
             holder.counter.setText(item.count.toString())
@@ -75,8 +75,7 @@ class ShoppingListRecyclerAdapter(
             }
 
             override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
-                if (p1)
-                    mListener.onIngredientSelected(item, p1)
+                mListener.onIngredientSelected(item, p1)
             }
 
         })

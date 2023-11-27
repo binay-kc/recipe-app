@@ -32,4 +32,6 @@ sealed class DataIntent {
     object FetchShoppingListData : DataIntent()
 
     data class AddToShoppingList(val ingredients: List<ExtendedIngredients>): DataIntent()
+
+    data class RemoveFromShoppingList(val ingredients: ExtendedIngredients): DataIntent()
 }
