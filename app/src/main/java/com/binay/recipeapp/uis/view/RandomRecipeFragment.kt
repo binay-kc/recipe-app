@@ -43,7 +43,7 @@ class RandomRecipeFragment : DialogFragment() {
         super.onStart()
         dialog?.window?.let {
             it.setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT ,
+                ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             it.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -58,6 +58,7 @@ class RandomRecipeFragment : DialogFragment() {
     }
 
     private fun initView() {
+        mBinding.root.visibility = View.GONE
         mBinding.btnCancel.setOnClickListener {
             dismiss()
         }
@@ -113,6 +114,8 @@ class RandomRecipeFragment : DialogFragment() {
         recipeId = recipe.id
         mBinding.recipeName.text = recipe.title
         mBinding.recipeCalorie.text = "${recipe.readyInMinutes} mins"
+
+        mBinding.root.visibility = View.VISIBLE
     }
 
     private fun fetchData() {
