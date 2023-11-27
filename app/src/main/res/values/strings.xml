@@ -9,6 +9,7 @@
 
     <string name="unit_converter">Unit Converter</string>
     <string name="label_unit_converter">Unit Converter</string>
+    <string name="list_name">Grocery List</string>
 
     <string-array name="units_array">
         <item>Cup</item>

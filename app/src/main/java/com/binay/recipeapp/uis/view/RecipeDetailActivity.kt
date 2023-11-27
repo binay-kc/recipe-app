@@ -128,6 +128,13 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
         mBinding.addToListButton.setOnClickListener {
             fragmentViewModel.groceryList.observe(this) {items ->
                 Log.e("grocery", "populateView: " +items.size)
+                lifecycleScope.launch {
+                    viewModel.dataIntent.send(
+                        DataIntent.AddToShoppingList(
+                            items
+                        )
+                    )
+                }
                 fragmentViewModel.groceryList.removeObservers(this)
             }
         }

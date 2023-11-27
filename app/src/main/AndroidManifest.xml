@@ -28,6 +28,7 @@
         <activity
             android:name="com.binay.recipeapp.uis.view.RecipeDetailActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name="com.binay.recipeapp.uis.view.ShoppingListActivity" />
     </application>
 
 </manifest>
