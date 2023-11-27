@@ -5,7 +5,7 @@
     android:id="@+id/cl_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".uis.view.CookingTimerActivity">
+    tools:context=".uis.view.cookingTimer.CookingTimerActivity">
 
     <FrameLayout
         android:id="@+id/fl_toolbar"
@@ -17,7 +17,7 @@
             android:id="@+id/toolbar"
             layout="@layout/item_toolbar" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/back_btn"
             android:layout_width="40dp"
             android:layout_height="35dp"

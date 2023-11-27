@@ -6,8 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.CheckBox
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -25,6 +23,7 @@ import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.ActivityRecipedetailBinding
 import com.binay.recipeapp.uis.intent.DataIntent
+import com.binay.recipeapp.uis.view.cookingTimer.CookingTimerActivity
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
@@ -40,6 +39,7 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
     private lateinit var mBinding: ActivityRecipedetailBinding
     private var recipeId = 0
     private var readyInMinutes: Int? = null
+    private var recipeName = ""
 
     private var isToolbarVisible = false
     private val titleList = arrayOf("Ingredients", "Instructions")
@@ -70,7 +70,8 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
         mBinding.btnStartCooking.setOnClickListener {
             if (readyInMinutes != null) {
                 val intent = Intent(this, CookingTimerActivity::class.java)
-                intent.putExtra("readyInMinutes",readyInMinutes)
+                intent.putExtra("ready_in_minutes", readyInMinutes)
+                intent.putExtra("recipe_name", recipeId)
                 startActivity(intent)
             }
         }
@@ -121,6 +122,7 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
                     is DataState.RecipeDetail -> {
                         Log.d("haancha", "initViewModel: " + it.recipeData)
                         recipeData = it.recipeData
+                        recipeName = recipeData.title ?: ""
                         readyInMinutes = recipeData.readyInMinutes
                         populateView(recipeData)
                     }
