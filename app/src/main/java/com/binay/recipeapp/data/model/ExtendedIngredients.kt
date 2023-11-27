@@ -8,5 +8,7 @@ import com.binay.recipeapp.uis.view.IngredientInstructionInterface
 data class ExtendedIngredients (
     @PrimaryKey var id           : Int?              = null,
     var name         : String?           = null,
-    var original     : String?           = null
+    var original     : String?           = null,
+    var image        : String?           = null,
+    var count        : Int               = 1,
 ): IngredientInstructionInterface

@@ -2,13 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/edittext_bg"
+    android:layout_marginVertical="4dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         android:gravity="center_vertical"
+        android:paddingVertical="7dp"
         android:orientation="horizontal" >
 
         <CheckBox
@@ -20,13 +24,61 @@
             android:theme="@style/CustomCheckBox"
             android:checked="false"/>
 
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:scaleType="fitXY"/>
+
         <TextView
             android:id="@+id/name"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:paddingVertical="5dp"
+            android:layout_marginHorizontal="15dp"
             android:textColor="@color/text_color"
             android:textStyle="bold"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:orientation="horizontal" >
+
+            <ImageButton
+                android:id="@+id/decrease"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@null"
+                android:src="@drawable/icon_minus"/>
+
+            <EditText
+                android:id="@+id/count"
+                android:layout_width="35dp"
+                android:layout_height="25dp"
+                android:paddingHorizontal="5dp"
+                android:text="1"
+                android:maxLines="1"
+                android:maxLength="3"
+                android:textSize="14sp"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:gravity="center"
+                android:background="@drawable/edittext_bg"/>
+
+            <ImageButton
+                android:id="@+id/increase"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:background="@null"
+                android:src="@drawable/icon_plus"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

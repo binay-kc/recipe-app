@@ -126,17 +126,7 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
         mBinding.recipeName.text = recipeData.title
 
         mBinding.addToListButton.setOnClickListener {
-            fragmentViewModel.groceryList.observe(this) {items ->
-                Log.e("grocery", "populateView: " +items.size)
-                lifecycleScope.launch {
-                    viewModel.dataIntent.send(
-                        DataIntent.AddToShoppingList(
-                            items
-                        )
-                    )
-                }
-                fragmentViewModel.groceryList.removeObservers(this)
-            }
+            addToShoppingList()
         }
 
         var mealType = ""
@@ -178,6 +168,20 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
             // Set tab text or leave it empty if you want to display only icons
             tab.text = titleList[position]
         }.attach()
+    }
+
+    private fun addToShoppingList() {
+        fragmentViewModel.groceryList.observe(this) {items ->
+            Log.e("grocery", "populateView: " +items.size)
+            lifecycleScope.launch {
+                viewModel.dataIntent.send(
+                    DataIntent.AddToShoppingList(
+                        items
+                    )
+                )
+            }
+            fragmentViewModel.groceryList.removeObservers(this)
+        }
     }
 
     private fun fetchDetailData(id: Int) {

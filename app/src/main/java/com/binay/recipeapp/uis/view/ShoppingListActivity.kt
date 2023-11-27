@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
+import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.databinding.ActivityShoppingListBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
@@ -16,10 +17,13 @@ import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 
-class ShoppingListActivity: AppCompatActivity() {
+
+class ShoppingListActivity: AppCompatActivity(),
+    ShoppingListRecyclerAdapter.GroceryItemClickListener {
 
     private lateinit var mBinding: ActivityShoppingListBinding
     private lateinit var mViewModel: MainViewModel
+    private lateinit var mAdapter: ShoppingListRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +44,8 @@ class ShoppingListActivity: AppCompatActivity() {
 
         mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mAdapter = ShoppingListRecyclerAdapter(this, this)
+        mBinding.recyclerView.adapter = mAdapter
     }
 
     private fun initViewModel() {
@@ -58,6 +64,8 @@ class ShoppingListActivity: AppCompatActivity() {
                     is DataState.IngredientResponse -> {
                         val ingredients = it.ingredients
                         Log.e("list", "initViewModel: " +ingredients.size )
+                        mBinding.itemCount.text = "Total Items: ".plus(ingredients.size)
+                        mAdapter.setIngredients(ingredients)
                     }
 
                     else -> {
@@ -73,6 +81,21 @@ class ShoppingListActivity: AppCompatActivity() {
         lifecycleScope.launch {
             mViewModel.dataIntent.send(
                 DataIntent.FetchShoppingListData
+            )
+        }
+    }
+
+    override fun onIngredientSelected(ingredient: ExtendedIngredients, isChecked: Boolean) {
+
+    }
+
+    override fun onCounterValueChanged(ingredients: List<ExtendedIngredients>) {
+
+        lifecycleScope.launch {
+            mViewModel.dataIntent.send(
+                DataIntent.AddToShoppingList(
+                    ingredients
+                )
             )
         }
     }
