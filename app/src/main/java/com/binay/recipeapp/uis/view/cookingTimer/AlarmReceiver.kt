@@ -18,17 +18,18 @@ import com.binay.recipeapp.R
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(p0: Context?, p1: Intent?) {
-        var timeWhenAlarmIsToBeSet = 1
+        var timeWhenAlarmIsToBeSet = 1L
+
         if (p1?.extras?.containsKey("timeWhenAlarmIsToBeSet") == true) {
-            timeWhenAlarmIsToBeSet = p1.extras?.getInt("timeWhenAlarmIsToBeSet") ?: 1
+            timeWhenAlarmIsToBeSet = p1.extras?.getLong("timeWhenAlarmIsToBeSet") ?: 1
             Log.e("Alarm to be set ", " $timeWhenAlarmIsToBeSet")
         }
-
         if (p1?.extras?.containsKey("recipeName") == true) {
-            val mediaPlayer: MediaPlayer? = MediaPlayer.create(p0, R.raw.alarm_sound)
+            val mediaPlayer: MediaPlayer? = MediaPlayer.create(p0, R.raw.sound_alarm)
 
-            val isToStartAlarm = p1.extras?.getBoolean("isToStartAlarm", true) ?: true
+            val isToStartAlarm = p1.action.equals("startAlarm")
             val notificationId = p1.extras?.getInt("notificationId") ?: 1
+            Log.e("Alarm start garnai parne ho"," $isToStartAlarm")
             if (isToStartAlarm) {
                 if (mediaPlayer != null && !mediaPlayer.isPlaying) {
                     mediaPlayer.start()

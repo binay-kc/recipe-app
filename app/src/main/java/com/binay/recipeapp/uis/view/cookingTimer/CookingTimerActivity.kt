@@ -149,17 +149,18 @@ class CookingTimerActivity : AppCompatActivity() {
     private fun startAlarm() {
         val intent = Intent(this, AlarmReceiver::class.java)
         val timeWhenAlarmIsToBeSet = System.currentTimeMillis() + (timeInMinutes!! * 60 * 1000)
-        intent.putExtra("timeWhenAlarmIsToBeSet", timeInMinutes)
+        intent.putExtra("timeWhenAlarmIsToBeSet", timeWhenAlarmIsToBeSet)
         intent.putExtra("recipeName", recipeName)
-        intent.putExtra("isToStartAlarm", true)
         intent.putExtra("notificationId", notificationId)
+        intent.action = "startAlarm"
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             ALARM_REQUEST_CODE,
             intent,
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager =
+            applicationContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeWhenAlarmIsToBeSet, pendingIntent)
         Log.e("Alarm setting at ", " $timeWhenAlarmIsToBeSet")
     }
@@ -171,15 +172,16 @@ class CookingTimerActivity : AppCompatActivity() {
         val intent = Intent(this, AlarmReceiver::class.java)
         val timeWhenAlarmIsToBeSet = System.currentTimeMillis() + (timeInMinutes!! * 60 * 1000)
         intent.putExtra("timeWhenAlarmIsToBeSet", timeWhenAlarmIsToBeSet)
-        intent.putExtra("isToStartAlarm", false)
+        intent.putExtra("recipeName", recipeName)
         intent.putExtra("notificationId", notificationId)
+        intent.action = "startAlarm"
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             ALARM_REQUEST_CODE,
             intent,
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val alarmManager = applicationContext.getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
     }
 
