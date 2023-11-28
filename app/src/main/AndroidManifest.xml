@@ -34,9 +34,13 @@
         </activity>
         <activity
             android:name=".uis.view.RecipeDetailActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
+        <activity android:name=".uis.view.ShoppingListActivity" />
+        <activity android:name="com.binay.recipeapp.uis.view.ExternalWebsitesActivity" />
+        <activity android:name="com.binay.recipeapp.uis.view.WebViewActivity" />
 
         <receiver android:name=".uis.view.cookingTimer.AlarmReceiver" />
+
     </application>
 
 </manifest>

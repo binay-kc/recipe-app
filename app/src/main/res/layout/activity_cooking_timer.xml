@@ -15,13 +15,13 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/item_toolbar" />
+            layout="@layout/item_toolbar_inner_activity" />
 
     </FrameLayout>
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/cpv_timer"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="100dp"
         android:layout_marginBottom="100dp"
@@ -29,6 +29,7 @@
         app:indicatorColor="@color/circular_progress_indicator_color"
         app:indicatorDirectionCircular="counterclockwise"
         app:layout_constraintBottom_toTopOf="@id/btn_cancel_cooking"
+        app:layout_constraintDimensionRatio="H,1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fl_toolbar"
@@ -48,8 +49,7 @@
         <androidx.appcompat.widget.LinearLayoutCompat
             android:id="@+id/ll_hour"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_hour_tenth"
@@ -80,7 +80,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/timer_margin_start"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             app:layout_constraintBottom_toBottomOf="@id/ll_hour"
             app:layout_constraintStart_toEndOf="@id/ll_hour"
             app:layout_constraintTop_toTopOf="@id/ll_hour">
@@ -114,7 +113,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/timer_margin_start"
-            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             app:layout_constraintBottom_toBottomOf="@id/ll_hour"
             app:layout_constraintStart_toEndOf="@id/ll_minute"
             app:layout_constraintTop_toTopOf="@id/ll_hour">

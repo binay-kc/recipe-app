@@ -42,12 +42,12 @@ class InstructionsFragment: Fragment() {
     }
 
     private fun initView() {
-//        mBinding.recyclerView.setHasFixedSize(true)
+        mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
     }
 
     private fun populateInstructions(items: List<AnalyzedInstructions>) {
-        Log.e("TAG", "populateInstructions: " + items[0])
+        Log.e("TAG", "populateInstructions: " + items)
         val mAdapter = items[0].steps?.let { InstructionsRecyclerAdapter(it) }
         mBinding.recyclerView.adapter = mAdapter
     }

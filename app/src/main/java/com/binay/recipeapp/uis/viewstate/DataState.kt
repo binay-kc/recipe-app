@@ -6,6 +6,7 @@ import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.data.model.SearchedRecipeData
+import com.binay.recipeapp.data.model.WebsiteData
 
 sealed class DataState {
     object Inactive : DataState()
@@ -27,4 +28,6 @@ sealed class DataState {
     data class IngredientResponse(val ingredients: ArrayList<ExtendedIngredients>): DataState()
 
     data class AddToShoppingList(val ingredients: List<ExtendedIngredients>): DataState()
+
+    data class FetchWebsiteList(val websites: List<WebsiteData>): DataState()
 }

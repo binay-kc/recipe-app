@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/item_toolbar_inner_activity" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal"
+            android:paddingVertical="15dp">
+
+            <TextView
+                android:id="@+id/item_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Total Items: 10"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/delete"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@null"
+                android:padding="3dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon_delete"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/clear_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@null"
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:text="Clear All"
+                android:textColor="@color/primary_color"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.2"
+            android:layout_marginHorizontal="20dp"
+            android:background="@color/secondary_color" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="15dp"
+            tools:listitem="@layout/item_grocery_list"/>
+
+    </LinearLayout>
+
+</LinearLayout>

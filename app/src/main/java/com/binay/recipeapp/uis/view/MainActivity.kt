@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
@@ -31,8 +32,7 @@ class MainActivity : AppCompatActivity(),
         R.drawable.nav_home,
         R.drawable.nav_search,
         R.drawable.nav_fav,
-        R.drawable.nav_more,
-        R.drawable.ic_swap
+        R.drawable.nav_convert
     )
 
     private lateinit var pagerAdapter: MyPagerAdapter
@@ -41,17 +41,22 @@ class MainActivity : AppCompatActivity(),
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initView()
+    }
+
+    private fun initView() {
+
+        binding.toolbar.list.setOnClickListener {
+            startActivity(Intent(this, ShoppingListActivity::class.java))
+        }
+
+        binding.toolbar.externalLink.setOnClickListener {
+            startActivity(Intent(this, ExternalWebsitesActivity::class.java))
+        }
 
         binding.viewPager.isUserInputEnabled = false
 
-        val fragments: MutableList<Fragment> = ArrayList()
-        fragments.add(HomeFragment())
-        fragments.add(SearchFragment())
-        fragments.add(FavoriteFragment())
-        fragments.add(UnitConverterFragment())
-
         //code to change selected tab color
-
         binding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 tab.icon!!.setColorFilter(
@@ -92,6 +97,12 @@ class MainActivity : AppCompatActivity(),
 
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
+
+        val fragments: MutableList<Fragment> = ArrayList()
+        fragments.add(HomeFragment())
+        fragments.add(SearchFragment())
+        fragments.add(FavoriteFragment())
+        fragments.add(UnitConverterFragment())
 
         pagerAdapter = MyPagerAdapter(this, fragments)
         binding.viewPager.adapter = pagerAdapter
