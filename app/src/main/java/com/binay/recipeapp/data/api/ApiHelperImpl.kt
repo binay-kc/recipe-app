@@ -9,7 +9,6 @@ import com.binay.recipeapp.data.model.SearchedRecipeData
 
 class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
     override suspend fun getData(tag: String): RecipeResponseData {
-        Log.d("haancha", "getData: ")
         return apiService.getData(tag)
     }
 
@@ -23,5 +22,9 @@ class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
 
     override suspend fun searchRecipesByIngredients(query: String): ArrayList<SearchedRecipe> {
         return apiService.searchRecipesByIngredients(query)
+    }
+
+    override suspend fun getRandomRecipe(): RecipeResponseData {
+        return apiService.getRandomRecipe()
     }
 }

@@ -41,5 +41,11 @@
     <string name="label_search_by_colon">Search By:</string>
     <string name="label_recipes">Recipes</string>
     <string name="label_nutrients">Ingredients</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="label_see_detail">See Detail</string>
+    <string name="label_default_hour">0</string>
+    <string name="label_colon"> :</string>
+    <string name="label_start_cooking">Start cooking</string>
+    <string name="label_timer">Cooking Timer</string>
 
 </resources>

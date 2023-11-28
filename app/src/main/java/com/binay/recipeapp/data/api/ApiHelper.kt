@@ -14,4 +14,6 @@ interface ApiHelper {
     suspend fun getRecipeDetail(id: Int): RecipeData
 
     suspend fun searchRecipesByIngredients(query: String): ArrayList<SearchedRecipe>
+
+    suspend fun getRandomRecipe(): RecipeResponseData
 }

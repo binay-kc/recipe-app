@@ -1,12 +1,11 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.CheckBox
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +23,7 @@ import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.ActivityRecipedetailBinding
 import com.binay.recipeapp.uis.intent.DataIntent
+import com.binay.recipeapp.uis.view.cookingTimer.CookingTimerActivity
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
@@ -33,11 +33,13 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener {
+class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mBinding: ActivityRecipedetailBinding
     private var recipeId = 0
+    private var readyInMinutes: Int? = null
+    private var recipeName = ""
 
     private var isToolbarVisible = false
     private val titleList = arrayOf("Ingredients", "Instructions")
@@ -65,13 +67,23 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
             onBackPressedDispatcher.onBackPressed()
         }
 
+        mBinding.btnStartCooking.setOnClickListener {
+            if (readyInMinutes != null) {
+                val intent = Intent(this, CookingTimerActivity::class.java)
+                intent.putExtra("ready_in_minutes", readyInMinutes)
+                intent.putExtra("recipe_name", recipeId)
+                startActivity(intent)
+            }
+        }
+
         mBinding.appBar.addOnOffsetChangedListener { appBarLayout, verticalOffset ->
             val maxScroll = appBarLayout.totalScrollRange
             val percentage = (abs(verticalOffset).toFloat() / maxScroll.toFloat())
 
             if (percentage > 0.7 && !isToolbarVisible) {
                 // Change toolbar title color to white and toolbar background color
-                mBinding.toolbar.background = ContextCompat.getDrawable(this, R.drawable.toolbar_background)
+                mBinding.toolbar.background =
+                    ContextCompat.getDrawable(this, R.drawable.toolbar_background)
                 mBinding.toolbarTitle.visibility = View.VISIBLE
                 mBinding.recipeName.visibility = View.GONE
                 isToolbarVisible = true
@@ -108,8 +120,10 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
                     }
 
                     is DataState.RecipeDetail -> {
-                        Log.d("haancha", "initViewModel: "+it.recipeData)
+                        Log.d("haancha", "initViewModel: " + it.recipeData)
                         recipeData = it.recipeData
+                        recipeName = recipeData.title ?: ""
+                        readyInMinutes = recipeData.readyInMinutes
                         populateView(recipeData)
                     }
 
@@ -152,7 +166,8 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
 
         for (nutrients in recipeData.nutrition?.nutrients!!) {
             if (nutrients.name.equals("calories", true)) {
-                mBinding.recipeDetail.calorieTag.text = nutrients.amount.toString() + " " +nutrients.unit + "/serving"
+                mBinding.recipeDetail.calorieTag.text =
+                    nutrients.amount.toString() + " " + nutrients.unit + "/serving"
                 break
             }
         }
@@ -164,7 +179,10 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
         val pagerAdapter = MyPagerAdapter(this, fragments)
         mBinding.recipeDetail.viewPager.adapter = pagerAdapter
 
-        TabLayoutMediator(mBinding.recipeDetail.tabLayout, mBinding.recipeDetail.viewPager) { tab, position ->
+        TabLayoutMediator(
+            mBinding.recipeDetail.tabLayout,
+            mBinding.recipeDetail.viewPager
+        ) { tab, position ->
             // Set tab text or leave it empty if you want to display only icons
             tab.text = titleList[position]
         }.attach()
@@ -196,13 +214,19 @@ class RecipeDetailActivity: AppCompatActivity(), TabLayout.OnTabSelectedListener
 
     override fun onTabSelected(tab: TabLayout.Tab) {
 
-        when(tab.position) {
+        when (tab.position) {
             0 -> { //ingredients
+                mBinding.btnStartCooking.visibility = View.GONE
                 fragmentViewModel.ingredients.value = recipeData.extendedIngredients
             }
+
             else -> { //instructions
                 mBinding.addToListButton.visibility = View.GONE
-                fragmentViewModel.instructions.value = recipeData.analyzedInstructions
+                if (readyInMinutes != null) mBinding.btnStartCooking.visibility =
+                    View.VISIBLE
+                val instructions = recipeData.analyzedInstructions
+                if (!instructions.isNullOrEmpty()) instructions[0].readyInMinutes = readyInMinutes
+                fragmentViewModel.instructions.value = instructions
             }
         }
     }

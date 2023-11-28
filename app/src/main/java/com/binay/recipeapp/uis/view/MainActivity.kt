@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(),
         }
 
         binding.toolbar.externalLink.setOnClickListener {
-
+            startActivity(Intent(this, ExternalWebsitesActivity::class.java))
         }
 
         binding.viewPager.isUserInputEnabled = false
@@ -112,6 +112,16 @@ class MainActivity : AppCompatActivity(),
             tab.text = ""
             tab.icon = ContextCompat.getDrawable(this, imageList[position])
         }.attach()
+
+        initRandomRecipeView()
+    }
+
+
+    private fun initRandomRecipeView() {
+        RandomRecipeFragment().show(
+            supportFragmentManager,
+            RandomRecipeFragment::class.java.canonicalName
+        )
     }
 
     class MyPagerAdapter(fragmentActivity: FragmentActivity?, fragments: List<Fragment>) :

@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -16,9 +19,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".uis.view.cookingTimer.CookingTimerActivity"
+            android:exported="false" />
+        <activity
             android:name=".uis.view.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +32,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.binay.recipeapp.uis.view.RecipeDetailActivity"
+            android:name=".uis.view.RecipeDetailActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.binay.recipeapp.uis.view.ShoppingListActivity" />
+        <activity android:name=".uis.view.ShoppingListActivity" />
         <activity android:name="com.binay.recipeapp.uis.view.ExternalWebsitesActivity" />
         <activity android:name="com.binay.recipeapp.uis.view.WebViewActivity" />
+
+        <receiver android:name=".uis.view.cookingTimer.AlarmReceiver" />
+
     </application>
 
 </manifest>

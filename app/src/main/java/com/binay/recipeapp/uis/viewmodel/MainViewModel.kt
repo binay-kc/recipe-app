@@ -104,6 +104,9 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                     )
 
                     is DataIntent.FetchWebsiteList -> fetchWebsiteData()
+
+                    is DataIntent.FetchRandomRecipe -> fetchRandomRecipe()
+
                 }
             }
         }
@@ -307,6 +310,27 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 val websiteData = db.websiteDao().getAll()
                 DataState.FetchWebsiteList(websiteData)
             } catch (e: Exception) {
+                DataState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun fetchRandomRecipe() {
+        viewModelScope.launch {
+            dataState.value = DataState.Loading
+            dataState.value = try {
+                val recipes = mRepository.getRandomRecipe()
+//               Checks favorite Dao and updates data accordingly
+//                Note: If room has recipe, then it is automatically favorite
+//                recipes.recipes.forEach {
+//                    val favoriteRecipe = db.favoriteDao().getRecipe(it.id)
+//                    if (favoriteRecipe != null) {
+//                        it.isFavorite = true
+//                    }
+//                }
+                DataState.ResponseData(recipes)
+            } catch (e: Exception) {
+                // TODO: Add proper way to parse error message and display to users
                 DataState.Error(e.localizedMessage)
             }
         }

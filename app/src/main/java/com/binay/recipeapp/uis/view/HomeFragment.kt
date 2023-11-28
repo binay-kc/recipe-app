@@ -93,7 +93,6 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
         fetchData("")
     }
 
-
     override fun onAttach(context: Context) {
         if (context is HomeFragmentListener) {
             mListener = context
@@ -111,7 +110,7 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
             viewModel.dataState.collect {
                 when (it) {
                     is DataState.Loading -> {
-                        Log.e("TAG", "initViewModel: loading", )
+                        Log.e("TAG", "initViewModel: loading")
                         if (responseData == null)
                             binding.progressBar.visibility = View.VISIBLE
                     }

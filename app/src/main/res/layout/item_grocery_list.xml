@@ -50,10 +50,11 @@
 
             <ImageButton
                 android:id="@+id/decrease"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:padding="6dp"
                 android:background="@null"
+                android:scaleType="fitXY"
                 android:src="@drawable/icon_minus"/>
 
             <EditText
@@ -72,10 +73,11 @@
 
             <ImageButton
                 android:id="@+id/increase"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:padding="6dp"
                 android:background="@null"
+                android:scaleType="fitXY"
                 android:src="@drawable/icon_plus"/>
 
         </LinearLayout>

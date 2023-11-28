@@ -10,9 +10,9 @@ sealed class DataIntent {
         val tag: String
     ) : DataIntent()
 
-    data class FetchRecipeDetail (
+    data class FetchRecipeDetail(
         val recipeId: Int
-    ): DataIntent()
+    ) : DataIntent()
 
     data class ChangeFavoriteStatus(
         val recipe: RecipeData,
@@ -37,4 +37,7 @@ sealed class DataIntent {
     data class RemoveFromShoppingList(val ingredients: ExtendedIngredients): DataIntent()
 
     object FetchWebsiteList: DataIntent()
+
+    object FetchRandomRecipe : DataIntent()
+
 }

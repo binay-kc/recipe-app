@@ -7,7 +7,13 @@
         <item name="android:textViewStyle">@style/AppText</item>
     </style>
 
-    <style name="Theme.RecipeApp" parent="Base.Theme.RecipeApp" />
+    <style name="AppBottomSheetDialogFragmentTheme" parent="Theme.Material3.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="Theme.RecipeApp" parent="Base.Theme.RecipeApp" >
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogFragmentTheme</item>
+    </style>
 
     <style name="AppText" parent="android:TextAppearance">
         <item name="android:fontFamily">@font/quicksand</item>
@@ -45,5 +51,4 @@
     <style name="CustomCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorPrimary">@color/secondary_color</item>
     </style>
-
 </resources>

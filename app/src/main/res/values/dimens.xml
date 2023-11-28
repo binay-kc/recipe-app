@@ -6,4 +6,7 @@
     <dimen name="default_margin">12dp</dimen>
     <dimen name="default_margin_top">12dp</dimen>
     <dimen name="default_margin_top_double">24dp</dimen>
+    <dimen name="btn_height">45dp</dimen>
+    <dimen name="timer_margin_start">8dp</dimen>
+    <dimen name="bottom_sheet_dialog_fragment_height">600dp</dimen>
 </resources>
