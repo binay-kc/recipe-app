@@ -71,7 +71,7 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
             if (readyInMinutes != null) {
                 val intent = Intent(this, CookingTimerActivity::class.java)
                 intent.putExtra("ready_in_minutes", readyInMinutes)
-                intent.putExtra("recipe_name", recipeId)
+                intent.putExtra("recipe_name", recipeName)
                 startActivity(intent)
             }
         }
