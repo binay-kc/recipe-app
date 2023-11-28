@@ -9,6 +9,7 @@ import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
+import com.binay.recipeapp.data.model.WebsiteData
 import com.binay.recipeapp.data.repository.MainRepository
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewstate.DataState
@@ -32,6 +33,36 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
 
     init {
         handleIntent()
+        insertWebsiteData()
+    }
+
+    private fun insertWebsiteData() {
+        viewModelScope.launch {
+            val websiteDao = db.websiteDao()
+
+            val websiteList: MutableList<WebsiteData> = ArrayList()
+            websiteList.add(WebsiteData("Yummy", "https://www.yummly.com/recipes"))
+            websiteList.add(WebsiteData("MyRecipes", "https://www.myrecipes.com/"))
+            websiteList.add(WebsiteData("Allrecipes", "https://www.allrecipes.com/"))
+            websiteList.add(WebsiteData("Food Network", "https://www.foodnetwork.com/recipes"))
+            websiteList.add(WebsiteData("BBC Good Food", "https://www.bbcgoodfood.com/"))
+            websiteList.add(WebsiteData("Tasty", "https://tasty.co/"))
+            websiteList.add(WebsiteData("Epicurious", "https://www.epicurious.com/"))
+            websiteList.add(WebsiteData("Serious Eats", "https://www.seriouseats.com/recipes"))
+            websiteList.add(WebsiteData("Bon Appétit", "https://www.bonappetit.com/recipes"))
+            websiteList.add(WebsiteData("Simply Recipes", "https://www.simplyrecipes.com/"))
+            websiteList.add(WebsiteData("EatingWell", "https://www.eatingwell.com/recipes"))
+            websiteList.add(WebsiteData("The Spruce Eats", "https://www.thespruceeats.com/recipes-4160606/"))
+            websiteList.add(WebsiteData("Skinnytaste", "https://www.skinnytaste.com/"))
+            websiteList.add(WebsiteData("Cookstr", "https://www.cookstr.com/"))
+            websiteList.add(WebsiteData("Taste of Home", "https://www.tasteofhome.com/recipes/"))
+            websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
+            websiteList.add(WebsiteData("Food52", "https://food52.com/recipes"))
+            websiteList.add(WebsiteData("Cooking Channel", "https://www.cookingchanneltv.com/recipes"))
+            websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
+
+            websiteDao.insert(websiteList)
+        }
     }
 
     private fun handleIntent() {
@@ -72,6 +103,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                         it.ingredients
                     )
 
+                    is DataIntent.FetchWebsiteList -> fetchWebsiteData()
                 }
             }
         }
@@ -264,6 +296,17 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 DataState.IngredientResponse(updatedList.toCollection(ArrayList()))
             } catch (e: Exception) {
                 Log.e("Error ", "" + e.localizedMessage)
+                DataState.Error(e.localizedMessage)
+            }
+        }
+    }
+
+    private fun fetchWebsiteData() {
+        viewModelScope.launch {
+            dataState.value = try {
+                val websiteData = db.websiteDao().getAll()
+                DataState.FetchWebsiteList(websiteData)
+            } catch (e: Exception) {
                 DataState.Error(e.localizedMessage)
             }
         }

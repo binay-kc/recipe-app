@@ -3,6 +3,7 @@ package com.binay.recipeapp.uis.intent
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
+import com.binay.recipeapp.data.model.WebsiteData
 
 sealed class DataIntent {
     data class FetchRecipeData(
@@ -34,4 +35,6 @@ sealed class DataIntent {
     data class AddToShoppingList(val ingredients: List<ExtendedIngredients>): DataIntent()
 
     data class RemoveFromShoppingList(val ingredients: ExtendedIngredients): DataIntent()
+
+    object FetchWebsiteList: DataIntent()
 }

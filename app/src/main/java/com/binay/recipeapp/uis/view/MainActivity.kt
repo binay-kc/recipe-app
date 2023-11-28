@@ -49,6 +49,11 @@ class MainActivity : AppCompatActivity(),
         binding.toolbar.list.setOnClickListener {
             startActivity(Intent(this, ShoppingListActivity::class.java))
         }
+
+        binding.toolbar.externalLink.setOnClickListener {
+
+        }
+
         binding.viewPager.isUserInputEnabled = false
 
         //code to change selected tab color

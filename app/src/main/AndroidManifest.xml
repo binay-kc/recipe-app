@@ -29,6 +29,8 @@
             android:name="com.binay.recipeapp.uis.view.RecipeDetailActivity"
             android:screenOrientation="portrait"/>
         <activity android:name="com.binay.recipeapp.uis.view.ShoppingListActivity" />
+        <activity android:name="com.binay.recipeapp.uis.view.ExternalWebsitesActivity" />
+        <activity android:name="com.binay.recipeapp.uis.view.WebViewActivity" />
     </application>
 
 </manifest>
