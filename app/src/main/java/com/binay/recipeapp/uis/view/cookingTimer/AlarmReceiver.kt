@@ -18,58 +18,75 @@ import com.binay.recipeapp.R
 class AlarmReceiver : BroadcastReceiver() {
 
     override fun onReceive(p0: Context?, p1: Intent?) {
-        var timeWhenAlarmIsToBeSet = 1L
+        var timeWhenAlarmIsToBeSet = 1
         if (p1?.extras?.containsKey("timeWhenAlarmIsToBeSet") == true) {
-            timeWhenAlarmIsToBeSet = p1.extras?.getLong("timeWhenAlarmIsToBeSet") ?: 1
+            timeWhenAlarmIsToBeSet = p1.extras?.getInt("timeWhenAlarmIsToBeSet") ?: 1
             Log.e("Alarm to be set ", " $timeWhenAlarmIsToBeSet")
         }
 
         if (p1?.extras?.containsKey("recipeName") == true) {
-            val recipeName = p1.extras?.getString("recipeName") ?:""
-            if(recipeName.isNotEmpty()){
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val importance = NotificationManager.IMPORTANCE_DEFAULT
-                    val channel = NotificationChannel("CulinaryDelight", "CulinaryDelightChannelName", importance).apply {
-                        description = "Culinary Delight Notification"
+            val mediaPlayer: MediaPlayer? = MediaPlayer.create(p0, R.raw.alarm_sound)
+
+            val isToStartAlarm = p1.extras?.getBoolean("isToStartAlarm", true) ?: true
+            val notificationId = p1.extras?.getInt("notificationId") ?: 1
+            if (isToStartAlarm) {
+                if (mediaPlayer != null && !mediaPlayer.isPlaying) {
+                    mediaPlayer.start()
+                }
+                val recipeName = p1.extras?.getString("recipeName") ?: ""
+                if (recipeName.isNotEmpty()) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        val importance = NotificationManager.IMPORTANCE_DEFAULT
+                        val channel = NotificationChannel(
+                            "CulinaryDelight",
+                            "CulinaryDelightChannelName",
+                            importance
+                        ).apply {
+                            description = "Culinary Delight Notification"
+                        }
+                        // Register the channel with the system.
+                        val notificationManager: NotificationManager =
+                            p0?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        notificationManager.createNotificationChannel(channel)
                     }
-                    // Register the channel with the system.
-                    val notificationManager: NotificationManager = p0?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.createNotificationChannel(channel)
+
+                    val builder = NotificationCompat.Builder(p0!!, "CulinaryDelight")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setContentTitle("$recipeName completion alert")
+                        .setContentText("$timeWhenAlarmIsToBeSet mins. has passed")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setAutoCancel(true)
+
+                    with(NotificationManagerCompat.from(p0)) {
+                        if (ActivityCompat.checkSelfPermission(
+                                p0,
+                                Manifest.permission.POST_NOTIFICATIONS
+                            ) != PackageManager.PERMISSION_GRANTED
+                        ) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return
+                        }
+                        notify(notificationId, builder.build())
+                    }
+                }
+            } else {
+                Log.e("Cancel", "Huna paryo")
+                val notificationManager: NotificationManager =
+                    p0?.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.cancel(notificationId)
+
+                if (mediaPlayer != null && !mediaPlayer.isPlaying) {
+                    mediaPlayer.stop()
                 }
 
-                val builder = NotificationCompat.Builder(p0!!, "CulinaryDelight")
-                    .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentTitle("$recipeName completion alert")
-                    .setContentText("$timeWhenAlarmIsToBeSet mins. has passed")
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                    .setAutoCancel(true)
-
-                with(NotificationManagerCompat.from(p0)) {
-                    if (ActivityCompat.checkSelfPermission(
-                            p0,
-                            Manifest.permission.POST_NOTIFICATIONS
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // TODO: Consider calling
-                        //    ActivityCompat#requestPermissions
-                        // here to request the missing permissions, and then overriding
-                        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                        //                                          int[] grantResults)
-                        // to handle the case where the user grants the permission. See the documentation
-                        // for ActivityCompat#requestPermissions for more details.
-                        return
-                    }
-                    notify(System.currentTimeMillis().toInt(), builder.build())
-                }
+                // TODO: Verify why cancel is not working
             }
-
-        }
-
-
-        val mediaPlayer: MediaPlayer? = MediaPlayer.create(p0, R.raw.alarm_sound)
-
-        if (mediaPlayer != null && !mediaPlayer.isPlaying) {
-            mediaPlayer.start()
         }
 
 

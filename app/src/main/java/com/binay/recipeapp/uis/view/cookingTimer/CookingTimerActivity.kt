@@ -12,6 +12,9 @@ import android.view.View
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.ActivityCookingTimerBinding
 
+/**
+ * Activity that displays timer and sounds alarm once timer is completed
+ */
 class CookingTimerActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityCookingTimerBinding
@@ -19,6 +22,8 @@ class CookingTimerActivity : AppCompatActivity() {
     private var recipeName = ""
     private var isAlreadyLessThanHour = false
     private var countDownTimer: CountDownTimer? = null
+
+    private val notificationId = System.currentTimeMillis().toInt()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +50,12 @@ class CookingTimerActivity : AppCompatActivity() {
             it.backBtn.let { ivBack ->
                 ivBack.visibility = View.VISIBLE
                 ivBack.setOnClickListener {
-                    onBackPressedDispatcher.onBackPressed()
+                    finishActivity()
                 }
             }
         }
+
+        mBinding.btnCancelCooking.visibility = View.GONE
 
         if (timeInMinutes != null) {
             startAlarm()
@@ -124,13 +131,14 @@ class CookingTimerActivity : AppCompatActivity() {
                         mBinding.tvSecondTenth.text = getString(R.string.label_default_hour)
                         mBinding.tvSecondZeroth.text = getString(R.string.label_default_hour)
                         mBinding.cpvTimer.progress = 100
-                        TODO("Add notification permission to tell users about completion of time")
+                        Log.e("Alarm ", "bajhna paryo")
                     }
 
                 }.start()
 
             mBinding.btnCancelCooking.setOnClickListener {
-
+                cancelAlarm()
+                finishActivity()
             }
         }
     }
@@ -143,6 +151,8 @@ class CookingTimerActivity : AppCompatActivity() {
         val timeWhenAlarmIsToBeSet = System.currentTimeMillis() + (timeInMinutes!! * 60 * 1000)
         intent.putExtra("timeWhenAlarmIsToBeSet", timeInMinutes)
         intent.putExtra("recipeName", recipeName)
+        intent.putExtra("isToStartAlarm", true)
+        intent.putExtra("notificationId", notificationId)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             ALARM_REQUEST_CODE,
@@ -150,7 +160,7 @@ class CookingTimerActivity : AppCompatActivity() {
             PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        alarmManager.set(AlarmManager.RTC_WAKEUP, timeWhenAlarmIsToBeSet, pendingIntent)
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, timeWhenAlarmIsToBeSet, pendingIntent)
         Log.e("Alarm setting at ", " $timeWhenAlarmIsToBeSet")
     }
 
@@ -161,6 +171,8 @@ class CookingTimerActivity : AppCompatActivity() {
         val intent = Intent(this, AlarmReceiver::class.java)
         val timeWhenAlarmIsToBeSet = System.currentTimeMillis() + (timeInMinutes!! * 60 * 1000)
         intent.putExtra("timeWhenAlarmIsToBeSet", timeWhenAlarmIsToBeSet)
+        intent.putExtra("isToStartAlarm", false)
+        intent.putExtra("notificationId", notificationId)
         val pendingIntent = PendingIntent.getBroadcast(
             this,
             ALARM_REQUEST_CODE,
@@ -169,6 +181,13 @@ class CookingTimerActivity : AppCompatActivity() {
         )
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         alarmManager.cancel(pendingIntent)
+    }
+
+    /**
+     * Finishes activity
+     */
+    private fun finishActivity() {
+        onBackPressedDispatcher.onBackPressed()
     }
 
     /**
@@ -183,6 +202,5 @@ class CookingTimerActivity : AppCompatActivity() {
     companion object {
         const val ALARM_REQUEST_CODE = 123
     }
-
 
 }
