@@ -15,8 +15,14 @@ import com.binay.recipeapp.databinding.ItemIngredientsBinding
 
 class IngredientsRecyclerAdapter(
     private var context: Context,
-    private var ingredientList: List<ExtendedIngredients>,
     private val mListener: IngredientClickListener): RecyclerView.Adapter<IngredientsRecyclerAdapter.IngredientViewHolder>() {
+
+    private var ingredientList: List<ExtendedIngredients> = ArrayList()
+
+    fun setIngredients(ingredientList: List<ExtendedIngredients>) {
+        this.ingredientList = ingredientList
+        notifyDataSetChanged()
+    }
 
     class IngredientViewHolder(binding: ItemIngredientsBinding): RecyclerView.ViewHolder(binding.root) {
         val checkbox = binding.checkbox
@@ -35,6 +41,7 @@ class IngredientsRecyclerAdapter(
     override fun onBindViewHolder(holder: IngredientViewHolder, position: Int) {
         val item = ingredientList[position]
 
+        holder.checkbox.isChecked = false
         holder.checkbox.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener,
             CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: RadioGroup?, p1: Int) {

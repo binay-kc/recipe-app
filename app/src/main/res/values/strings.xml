@@ -47,5 +47,7 @@
     <string name="label_colon"> :</string>
     <string name="label_start_cooking">Start cooking</string>
     <string name="label_timer">Cooking Timer</string>
+    <string name="explore">Explore Recipe </string>
+    <string name="random_title">Recipe Roulette: Random Delight</string>
 
 </resources>

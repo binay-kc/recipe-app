@@ -10,13 +10,24 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.binay.recipeapp.R
+import com.binay.recipeapp.data.api.ApiHelperImpl
+import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.databinding.ActivityMainBinding
+import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.search.SearchFragment
+import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
+import com.binay.recipeapp.uis.viewmodel.MainViewModel
+import com.binay.recipeapp.uis.viewstate.DataState
+import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(),
     MoreFragment.MoreFragmentListener,
@@ -24,9 +35,8 @@ class MainActivity : AppCompatActivity(),
     FavoriteFragment.FavoriteListener,
     SearchFragment.SearchListener {
 
-
-    lateinit var binding: ActivityMainBinding
-
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var mViewModel: MainViewModel
 
     private val imageList = intArrayOf(
         R.drawable.nav_home,
@@ -42,6 +52,7 @@ class MainActivity : AppCompatActivity(),
         setContentView(binding.root)
 
         initView()
+        initViewModel()
     }
 
     private fun initView() {
@@ -112,10 +123,47 @@ class MainActivity : AppCompatActivity(),
             tab.text = ""
             tab.icon = ContextCompat.getDrawable(this, imageList[position])
         }.attach()
-
-        initRandomRecipeView()
     }
 
+    private fun initViewModel() {
+        mViewModel = ViewModelProvider(
+            this,
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this)
+        )[MainViewModel::class.java]
+
+        val fragmentViewModel = ViewModelProvider(this)[FragmentDataViewModel::class.java]
+
+        lifecycleScope.launch {
+            mViewModel.dataState.collect {
+                when (it) {
+                    is DataState.Loading -> {
+                        Log.e("TAG", "initViewModel: loading")
+                    }
+
+                    is DataState.ResponseData -> {
+                        val recipe = it.recipeResponseData.recipes[0]
+                        fragmentViewModel.randomRecipe.value = recipe
+
+                        initRandomRecipeView()
+                    }
+
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
+        fetchRandomRecipe()
+    }
+
+    private fun fetchRandomRecipe() {
+        lifecycleScope.launch {
+            mViewModel.dataIntent.send(
+                DataIntent.FetchRandomRecipe
+            )
+        }
+    }
 
     private fun initRandomRecipeView() {
         RandomRecipeFragment().show(

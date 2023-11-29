@@ -9,12 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.databinding.FragmentInstructionsBinding
+import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
 
 class IngredientsFragment: Fragment(), IngredientsRecyclerAdapter.IngredientClickListener {
 
     private lateinit var mBinding: FragmentInstructionsBinding
-    private lateinit var viewModel: MyViewModel
-    private var groceryList: MutableList<ExtendedIngredients> = ArrayList()
+    private lateinit var viewModel: FragmentDataViewModel
+    private var groceryList: MutableList<ExtendedIngredients> = ArrayList() //to be added to shopping list
+    private lateinit var mAdapter: IngredientsRecyclerAdapter
+    private var ingredientList: List<ExtendedIngredients> = ArrayList() //list to be shown here
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,24 +31,28 @@ class IngredientsFragment: Fragment(), IngredientsRecyclerAdapter.IngredientClic
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initViewModel()
         initView()
+        initViewModel()
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[FragmentDataViewModel::class.java]
         viewModel.ingredients.observe(viewLifecycleOwner) { items ->
-            populateIngredients(items)
+            ingredientList = items
+            mAdapter.setIngredients(items)
+        }
+
+        viewModel.isAddedToList.observe(viewLifecycleOwner) {
+            viewModel.isAddedToList.removeObservers(this)
+            mAdapter.setIngredients(ingredientList)
         }
     }
 
     private fun initView() {
         mBinding.recyclerView.setHasFixedSize(true)
         mBinding.recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-    }
 
-    private fun populateIngredients(items: List<ExtendedIngredients>) {
-        val mAdapter = IngredientsRecyclerAdapter(requireContext(), items, this)
+        mAdapter = IngredientsRecyclerAdapter(requireContext(), this)
         mBinding.recyclerView.adapter = mAdapter
     }
 

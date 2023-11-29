@@ -24,9 +24,11 @@ import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.ActivityRecipedetailBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.cookingTimer.CookingTimerActivity
+import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
@@ -44,7 +46,7 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
     private var isToolbarVisible = false
     private val titleList = arrayOf("Ingredients", "Instructions")
 
-    private lateinit var fragmentViewModel: MyViewModel
+    private lateinit var fragmentViewModel: FragmentDataViewModel
     private lateinit var recipeData: RecipeData
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +67,10 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
 
         mBinding.backBtn.setOnClickListener {
             onBackPressedDispatcher.onBackPressed()
+        }
+
+        mBinding.addToListButton.setOnClickListener {
+            addToShoppingList()
         }
 
         mBinding.btnStartCooking.setOnClickListener {
@@ -99,7 +105,7 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
 
     private fun initViewModel() {
 
-        fragmentViewModel = ViewModelProvider(this)[MyViewModel::class.java]
+        fragmentViewModel = ViewModelProvider(this)[FragmentDataViewModel::class.java]
         fragmentViewModel.isChecked.observe(this) {
             if (it)
                 mBinding.addToListButton.visibility = View.VISIBLE
@@ -138,10 +144,6 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
     private fun populateView(recipeData: RecipeData) {
         mBinding.toolbarTitle.text = recipeData.title
         mBinding.recipeName.text = recipeData.title
-
-        mBinding.addToListButton.setOnClickListener {
-            addToShoppingList()
-        }
 
         var mealType = ""
         for (cuisine in recipeData.cuisines!!) {
@@ -200,6 +202,9 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
             }
             fragmentViewModel.groceryList.removeObservers(this)
         }
+        fragmentViewModel.isAddedToList.value = true
+        mBinding.addToListButton.visibility = View.GONE
+        Snackbar.make(mBinding.root, "Added to Grocery List successfully", Snackbar.LENGTH_SHORT).show()
     }
 
     private fun fetchDetailData(id: Int) {
@@ -252,11 +257,4 @@ class MyPagerAdapter(fragmentActivity: FragmentActivity?, fragments: ArrayList<F
     override fun getItemCount(): Int {
         return fragments.size
     }
-}
-
-class MyViewModel : ViewModel() {
-    val ingredients = MutableLiveData<List<ExtendedIngredients>>()
-    val instructions = MutableLiveData<List<AnalyzedInstructions>>()
-    val isChecked = MutableLiveData<Boolean>()
-    val groceryList = MutableLiveData<List<ExtendedIngredients>>()
 }

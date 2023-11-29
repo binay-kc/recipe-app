@@ -12,11 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.recipeapp.data.model.AnalyzedInstructions
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.databinding.FragmentInstructionsBinding
+import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
 
 class InstructionsFragment: Fragment() {
 
     private lateinit var mBinding: FragmentInstructionsBinding
-    private lateinit var viewModel: MyViewModel
+    private lateinit var viewModel: FragmentDataViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +36,7 @@ class InstructionsFragment: Fragment() {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(requireActivity())[MyViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[FragmentDataViewModel::class.java]
         viewModel.instructions.observe(viewLifecycleOwner) { items ->
             populateInstructions(items)
         }

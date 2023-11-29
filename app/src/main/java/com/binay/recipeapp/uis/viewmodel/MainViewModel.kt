@@ -107,6 +107,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
 
                     is DataIntent.FetchRandomRecipe -> fetchRandomRecipe()
 
+                    else -> {}
                 }
             }
         }
