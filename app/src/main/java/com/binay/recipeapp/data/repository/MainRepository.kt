@@ -2,13 +2,21 @@ package com.binay.recipeapp.data.repository
 
 import android.content.Context
 import com.binay.recipeapp.data.api.ApiHelper
+import com.binay.recipeapp.data.repository.local.LocalRepo
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.model.RecipeResponseData
+import com.binay.recipeapp.data.repository.remote.RemoteRepo
 import com.binay.recipeapp.util.NetworkUtil
 
-class MainRepository(private val apiHelper: ApiHelper, private val mContext : Context, private val mDatabase : AppDatabase) {
+class MainRepository(
+    private val apiHelper: ApiHelper,
+    private val mContext: Context,
+    mDatabase: AppDatabase
+) {
 
-    // TODO: Remove this and use as per required
+    private val mLocalRepo: LocalRepo = LocalRepo(mDatabase)
+    private val mRemoteRepo: RemoteRepo = RemoteRepo(apiHelper, mDatabase)
+
     suspend fun getRecipes(tag: String) = apiHelper.getData(tag)
 
     suspend fun getRecipeDetail(id: Int) = apiHelper.getRecipeDetail(id)
@@ -18,23 +26,11 @@ class MainRepository(private val apiHelper: ApiHelper, private val mContext : Co
     suspend fun searchRecipesByIngredients(query: String) =
         apiHelper.searchRecipesByIngredients(query)
 
-    suspend fun getRandomRecipe() : RecipeResponseData{
-        if(!NetworkUtil.isNetworkAvailable(mContext)){
-            val randomRecipe = mDatabase.randomRecipeDao().getRandomRecipe()
-            if (randomRecipe!=null) {
-                return RecipeResponseData(arrayListOf(randomRecipe))
-            }
+    suspend fun getRandomRecipe(): RecipeResponseData {
+        if (!NetworkUtil.isNetworkAvailable(mContext)) {
+            val localRandomRecipe = mLocalRepo.getRandomRecipe()
+            if (localRandomRecipe != null) return localRandomRecipe
         }
-        val randomRecipeData = apiHelper.getRandomRecipe()
-        if (randomRecipeData.recipes.isNotEmpty()) {
-            val newRandomRecipe = randomRecipeData.recipes[0]
-            newRandomRecipe.isRandom = true
-            val randomDao = mDatabase.randomRecipeDao()
-//                    Fetch previous random recipe
-            val previousRandomRecipe = randomDao.getRandomRecipe()
-            if (previousRandomRecipe!=null) randomDao.removeRandomRecipe(previousRandomRecipe)
-            randomDao.addRandomRecipe(newRandomRecipe)
-        }
-       return randomRecipeData
+        return mRemoteRepo.getRandomRecipe()
     }
 }

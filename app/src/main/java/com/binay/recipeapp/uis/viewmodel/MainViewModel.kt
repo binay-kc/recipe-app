@@ -328,7 +328,6 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
     }
 
     private fun fetchRandomRecipe() {
-        val randomDao = db.randomRecipeDao()
         viewModelScope.launch {
             dataState.value = DataState.Loading
             dataState.value = try {
