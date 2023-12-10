@@ -17,7 +17,13 @@ class MainRepository(
     private val mLocalRepo: LocalRepo = LocalRepo(mDatabase)
     private val mRemoteRepo: RemoteRepo = RemoteRepo(apiHelper, mDatabase)
 
-    suspend fun getRecipes(tag: String) = apiHelper.getData(tag)
+    suspend fun getRecipes(tag: String): RecipeResponseData {
+        if (!NetworkUtil.isNetworkAvailable(mContext)) {
+            val recipesData = mLocalRepo.getRecipesByTag(tag)
+            if (recipesData != null) return recipesData
+        }
+        return mRemoteRepo.getRecipes(tag)
+    }
 
     suspend fun getRecipeDetail(id: Int) = apiHelper.getRecipeDetail(id)
 

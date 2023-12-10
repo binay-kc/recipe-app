@@ -1,10 +1,10 @@
 package com.binay.recipeapp.data.local.favoriteDb
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.binay.recipeapp.data.model.RecipeData
 
 @Dao
@@ -18,10 +18,10 @@ interface FavoriteDao {
     @Query("Select * From recipes WHERE isFavorite = 1")
     fun getAllRecipes(): List<RecipeData>
 
-    @Query("Select * From recipes WHERE id = :recipeId")
+    @Query("Select * From recipes WHERE id = :recipeId AND isFavorite = 1")
     fun getRecipe(recipeId: Int): RecipeData?
 
-    @Delete
-    suspend fun removeRecipe(recipe: RecipeData)
+    @Update
+    suspend fun removeRecipeFromFavorite(recipe: RecipeData)
 
 }

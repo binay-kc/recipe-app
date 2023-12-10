@@ -129,14 +129,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
             dataState.value = DataState.Loading
             dataState.value = try {
                 val recipes = mRepository.getRecipes(tag)
-//               Checks favorite Dao and updates data accordingly
-//                Note: If room has recipe, then it is automatically favorite
-                recipes.recipes.forEach {
-                    val favoriteRecipe = db.favoriteDao().getRecipe(it.id)
-                    if (favoriteRecipe != null) {
-                        it.isFavorite = true
-                    }
-                }
+
                 DataState.ResponseData(recipes)
             } catch (e: Exception) {
                 // TODO: Add proper way to parse error message and display to users
@@ -170,7 +163,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 if (isToFavorite) {
                     favoriteDao.addRecipe(recipe)
                 } else {
-                    favoriteDao.removeRecipe(recipe)
+                    favoriteDao.removeRecipeFromFavorite(recipe)
                 }
                 DataState.AddToFavoriteResponse(recipe)
             } catch (e: Exception) {
@@ -236,7 +229,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                     if (isToFavorite) {
                         favoriteDao.addRecipe(recipeDetail)
                     } else {
-                        favoriteDao.removeRecipe(recipeDetail)
+                        favoriteDao.removeRecipeFromFavorite(recipeDetail)
                     }
                     DataState.AddToFavoriteResponse(RecipeData())
                 } catch (e: Exception) {
@@ -332,14 +325,6 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
             dataState.value = DataState.Loading
             dataState.value = try {
                 val recipes = mRepository.getRandomRecipe()
-//               Checks favorite Dao and updates data accordingly
-//                Note: If room has recipe, then it is automatically favorite
-//                recipes.recipes.forEach {
-//                    val favoriteRecipe = db.favoriteDao().getRecipe(it.id)
-//                    if (favoriteRecipe != null) {
-//                        it.isFavorite = true
-//                    }
-//                }
                 DataState.ResponseData(recipes)
             } catch (e: Exception) {
                 // TODO: Add proper way to parse error message and display to users

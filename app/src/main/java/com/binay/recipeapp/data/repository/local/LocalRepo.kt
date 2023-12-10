@@ -12,4 +12,10 @@ class LocalRepo(private val mDatabase: AppDatabase) {
         }
         return null
     }
+
+    fun getRecipesByTag(tag: String): RecipeResponseData? {
+        val recipes = mDatabase.recipeDao().getRecipes(tag)
+        if (recipes != null) return RecipeResponseData(ArrayList(recipes))
+        return null
+    }
 }
