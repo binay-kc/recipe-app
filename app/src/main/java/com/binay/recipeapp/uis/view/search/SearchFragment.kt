@@ -20,6 +20,7 @@ import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.databinding.FragmentSearchBinding
+import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.HomeFragment
 import com.binay.recipeapp.uis.view.RecipeDetailActivity
@@ -32,7 +33,7 @@ import com.google.android.material.chip.ChipGroup.OnCheckedStateChangeListener
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class SearchFragment : Fragment() {
+class SearchFragment : BaseFragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var mViewModel: MainViewModel
@@ -130,7 +131,7 @@ class SearchFragment : Fragment() {
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext())
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

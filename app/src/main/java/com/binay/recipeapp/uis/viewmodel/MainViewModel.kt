@@ -31,6 +31,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
         AppDatabase::class.java, "recipe-palette"
     ).allowMainThreadQueries().build()
 
+
     init {
         handleIntent()
         insertWebsiteData()
@@ -52,13 +53,23 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
             websiteList.add(WebsiteData("Bon Appétit", "https://www.bonappetit.com/recipes"))
             websiteList.add(WebsiteData("Simply Recipes", "https://www.simplyrecipes.com/"))
             websiteList.add(WebsiteData("EatingWell", "https://www.eatingwell.com/recipes"))
-            websiteList.add(WebsiteData("The Spruce Eats", "https://www.thespruceeats.com/recipes-4160606/"))
+            websiteList.add(
+                WebsiteData(
+                    "The Spruce Eats",
+                    "https://www.thespruceeats.com/recipes-4160606/"
+                )
+            )
             websiteList.add(WebsiteData("Skinnytaste", "https://www.skinnytaste.com/"))
             websiteList.add(WebsiteData("Cookstr", "https://www.cookstr.com/"))
             websiteList.add(WebsiteData("Taste of Home", "https://www.tasteofhome.com/recipes/"))
             websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
             websiteList.add(WebsiteData("Food52", "https://food52.com/recipes"))
-            websiteList.add(WebsiteData("Cooking Channel", "https://www.cookingchanneltv.com/recipes"))
+            websiteList.add(
+                WebsiteData(
+                    "Cooking Channel",
+                    "https://www.cookingchanneltv.com/recipes"
+                )
+            )
             websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
 
             websiteDao.insert(websiteList)
@@ -317,6 +328,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
     }
 
     private fun fetchRandomRecipe() {
+        val randomDao = db.randomRecipeDao()
         viewModelScope.launch {
             dataState.value = DataState.Loading
             dataState.value = try {

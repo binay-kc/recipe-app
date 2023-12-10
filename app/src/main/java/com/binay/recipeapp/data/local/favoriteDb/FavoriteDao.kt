@@ -15,7 +15,7 @@ interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAllRecipes(recipes: List<RecipeData>)
 
-    @Query("Select * From recipes")
+    @Query("Select * From recipes WHERE isFavorite = 1")
     fun getAllRecipes(): List<RecipeData>
 
     @Query("Select * From recipes WHERE id = :recipeId")

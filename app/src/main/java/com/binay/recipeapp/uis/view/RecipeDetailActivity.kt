@@ -6,22 +6,18 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
-import com.binay.recipeapp.data.model.AnalyzedInstructions
-import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.ActivityRecipedetailBinding
+import com.binay.recipeapp.uis.base.BaseActivity
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.cookingTimer.CookingTimerActivity
 import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
@@ -35,7 +31,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
+class RecipeDetailActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var mBinding: ActivityRecipedetailBinding
@@ -115,7 +111,7 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
 
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this)
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this, mDatabase)
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

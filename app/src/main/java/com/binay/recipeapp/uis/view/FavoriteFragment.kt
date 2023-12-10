@@ -14,13 +14,14 @@ import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.FragmentFavoriteBinding
+import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 
-class FavoriteFragment : Fragment() {
+class FavoriteFragment : BaseFragment() {
 
     private lateinit var mBinding: FragmentFavoriteBinding
     private lateinit var mAdapter: RecipeRecyclerAdapter
@@ -78,7 +79,7 @@ class FavoriteFragment : Fragment() {
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext())
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

@@ -18,6 +18,7 @@ import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.databinding.FragmentHomeBinding
+import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.Locale
 
-class HomeFragment : Fragment(), OnCategoryClickListener {
+class HomeFragment : BaseFragment(), OnCategoryClickListener {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: CategoryRecyclerAdapter
@@ -103,7 +104,7 @@ class HomeFragment : Fragment(), OnCategoryClickListener {
     private fun initViewModel() {
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext())
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

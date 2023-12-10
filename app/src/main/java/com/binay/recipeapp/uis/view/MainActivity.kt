@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -17,6 +16,7 @@ import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.databinding.ActivityMainBinding
+import com.binay.recipeapp.uis.base.BaseActivity
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.search.SearchFragment
 import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
@@ -26,10 +26,9 @@ import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity(),
+class MainActivity : BaseActivity(),
     MoreFragment.MoreFragmentListener,
     HomeFragment.HomeFragmentListener,
     FavoriteFragment.FavoriteListener,
@@ -128,7 +127,7 @@ class MainActivity : AppCompatActivity(),
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this)
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this, mDatabase)
         )[MainViewModel::class.java]
 
         val fragmentViewModel = ViewModelProvider(this)[FragmentDataViewModel::class.java]

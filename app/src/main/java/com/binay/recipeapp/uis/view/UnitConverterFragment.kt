@@ -16,13 +16,14 @@ import com.binay.recipeapp.data.api.ApiHelper
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.databinding.FragmentUnitConverterBinding
+import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.UnitIntent
 import com.binay.recipeapp.uis.viewmodel.UnitConverterViewModel
 import com.binay.recipeapp.uis.viewstate.UnitState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 
-class UnitConverterFragment : Fragment() {
+class UnitConverterFragment : BaseFragment() {
 
     private lateinit var mBinding: FragmentUnitConverterBinding
     private lateinit var mUnitArray: Array<String>
@@ -54,7 +55,7 @@ class UnitConverterFragment : Fragment() {
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext())
+            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
         )[UnitConverterViewModel::class.java]
 
         observeViewModel()
