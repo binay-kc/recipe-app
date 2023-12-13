@@ -50,11 +50,19 @@ class RecipeDetailActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         mBinding = ActivityRecipedetailBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        recipeId = intent.getIntExtra("recipe_id", 0)
+        recipeId = intent?.data?.getQueryParameter("id")?.toInt() ?: 0
+        if (recipeId == 0)
+            recipeId = intent.getIntExtra("recipe_id", 0)
 
         initViewModel()
         initView()
 
+        fetchDetailData(recipeId)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        recipeId = intent?.data?.getQueryParameter("id")?.toInt() ?: 0
         fetchDetailData(recipeId)
     }
 
@@ -92,10 +100,22 @@ class RecipeDetailActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
             } else if (percentage <= 0.7 && isToolbarVisible) {
                 // Change toolbar title color to your desired color and toolbar background color
                 mBinding.toolbar.background = ColorDrawable(Color.TRANSPARENT)
-                mBinding.toolbarTitle.visibility = View.GONE
+                mBinding.toolbarTitle.visibility = View.INVISIBLE
                 mBinding.recipeName.visibility = View.VISIBLE
                 isToolbarVisible = false
             }
+        }
+
+        mBinding.shareBtn.setOnClickListener {
+            val deepLink = "http://open.my.recipe/detail?id=$recipeId"
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Check out this recipe: $deepLink")
+                type = "text/plain"
+            }
+
+            val shareIntent = Intent.createChooser(sendIntent, null)
+            startActivity(shareIntent)
         }
     }
 

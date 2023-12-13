@@ -77,6 +77,7 @@ class RandomRecipeFragment : DialogFragment() {
         mBinding.explore.setOnClickListener {
             if (recipeId != -1) {
                 val intent = Intent(context, RecipeDetailActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 intent.putExtra("recipe_id", recipeId)
                 startActivity(intent)
                 dismiss()

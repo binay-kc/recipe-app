@@ -84,6 +84,7 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
 
                 override fun onRecipeClicked(recipe: RecipeData) {
                     val intent = Intent(context, RecipeDetailActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.putExtra("recipe_id", recipe.id)
                     startActivity(intent)
                 }
