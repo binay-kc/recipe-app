@@ -27,9 +27,11 @@ import com.binay.recipeapp.uis.view.RecipeDetailActivity
 import com.binay.recipeapp.uis.view.RecipeRecyclerAdapter
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
+import com.binay.recipeapp.util.NetworkUtil
 import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.chip.ChipGroup.OnCheckedStateChangeListener
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -85,6 +87,10 @@ class SearchFragment : BaseFragment() {
                 }
 
                 override fun onRecipeClicked(recipe: SearchedRecipe) {
+                    if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+                        Snackbar.make(binding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                        return
+                    }
                     val intent = Intent(context, RecipeDetailActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.putExtra("recipe_id", recipe.id)

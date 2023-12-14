@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
+import com.binay.recipeapp.R
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
@@ -18,7 +19,9 @@ import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
+import com.binay.recipeapp.util.NetworkUtil
 import com.binay.recipeapp.util.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class FavoriteFragment : BaseFragment() {
@@ -62,6 +65,10 @@ class FavoriteFragment : BaseFragment() {
                 }
 
                 override fun onRecipeClicked(recipe: RecipeData) {
+                    if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+                        Snackbar.make(mBinding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                        return
+                    }
                     val intent = Intent(context, RecipeDetailActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.putExtra("recipe_id", recipe.id)

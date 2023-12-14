@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -134,9 +135,14 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
                         binding.progressBar.visibility = View.GONE
                         binding.recipeRecycler.visibility = View.VISIBLE
                         binding.refreshLayout.isRefreshing = false
+                        binding.noInternetLayout.visibility = View.GONE
+
                         Log.d("haancha", "initViewModel: " + it.recipeResponseData)
                         responseData = it.recipeResponseData
                         recipeAdapter.setRecipes(it.recipeResponseData.recipes)
+                        if (it.recipeResponseData.recipes.isEmpty() && !NetworkUtil.isNetworkAvailable(requireContext()))
+                            binding.noInternetLayout.visibility = View.VISIBLE
+
                     }
 
                     is DataState.AddToFavoriteResponse -> {
@@ -184,6 +190,7 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
     }
 
     private fun getCategoryWiseData() {
+        binding.noInternetLayout.visibility = View.GONE
         val cuisines = resources.getStringArray(R.array.category_array)
         when (currentCategoryPosition) {
             0 -> {
