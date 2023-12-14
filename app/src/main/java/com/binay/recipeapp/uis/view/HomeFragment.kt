@@ -22,7 +22,9 @@ import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
+import com.binay.recipeapp.util.NetworkUtil
 import com.binay.recipeapp.util.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.Locale
@@ -68,7 +70,6 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
         binding.recipeRecycler.setHasFixedSize(true)
         binding.recipeRecycler.layoutManager = GridLayoutManager(requireContext(), 2)
 
-
         recipeAdapter = RecipeRecyclerAdapter(requireContext(),
             object : RecipeRecyclerAdapter.RecipeClickListener {
                 override fun onFavoriteChanged(
@@ -83,6 +84,10 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
                 }
 
                 override fun onRecipeClicked(recipe: RecipeData) {
+                    if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+                        Snackbar.make(binding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                        return
+                    }
                     val intent = Intent(context, RecipeDetailActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.putExtra("recipe_id", recipe.id)
@@ -92,7 +97,15 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
             })
         binding.recipeRecycler.adapter = recipeAdapter
 
-        fetchData("")
+        binding.refreshLayout.setOnRefreshListener {
+            if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+                binding.refreshLayout.isRefreshing = false
+                Snackbar.make(binding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+            } else
+                getCategoryWiseData()
+        }
+
+        fetchData("all")
     }
 
     override fun onAttach(context: Context) {
@@ -120,6 +133,7 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
                     is DataState.ResponseData -> {
                         binding.progressBar.visibility = View.GONE
                         binding.recipeRecycler.visibility = View.VISIBLE
+                        binding.refreshLayout.isRefreshing = false
                         Log.d("haancha", "initViewModel: " + it.recipeResponseData)
                         responseData = it.recipeResponseData
                         recipeAdapter.setRecipes(it.recipeResponseData.recipes)
@@ -158,21 +172,27 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
         }
     }
 
+    private var currentCategoryPosition = 0
     override fun categoryClick(position: Int) {
 
+        currentCategoryPosition = position
         adapter.updateAdapter(position)
         binding.recipeRecycler.visibility = View.GONE
-        val cuisines = resources.getStringArray(R.array.category_array)
 
         responseData = null
-        when (position) {
+        getCategoryWiseData()
+    }
+
+    private fun getCategoryWiseData() {
+        val cuisines = resources.getStringArray(R.array.category_array)
+        when (currentCategoryPosition) {
             0 -> {
-                fetchData("")
+                fetchData("all")
             }
 
             else -> {
-                Log.d("hanyo", "categoryClick: " + position + cuisines[position])
-                fetchData(cuisines[position].lowercase(Locale.ROOT))
+                Log.d("hanyo", "categoryClick: " + currentCategoryPosition + cuisines[currentCategoryPosition])
+                fetchData(cuisines[currentCategoryPosition].lowercase(Locale.ROOT))
             }
         }
     }

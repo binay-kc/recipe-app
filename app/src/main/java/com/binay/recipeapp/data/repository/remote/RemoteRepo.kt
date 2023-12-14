@@ -23,7 +23,11 @@ class RemoteRepo(private val apiHelper: ApiHelper, private val mDatabase: AppDat
     }
 
     suspend fun getRecipes(tag: String): RecipeResponseData {
-        val recipeData = apiHelper.getData(tag)
+
+        var recipeData = if (tag == "all")
+            apiHelper.getData("")
+        else apiHelper.getData(tag)
+
 //        Fetch and remove previous recipes which are not favorite
         val recipeDao = mDatabase.recipeDao()
         val previousRecipes = recipeDao.getRecipes(tag)

@@ -158,7 +158,7 @@ class MainViewModel(private val mRepository: MainRepository, mContext: Context) 
                 recipe.isFavorite = isToFavorite
 //               Checks favorite Dao and updates data accordingly
                 val favoriteDao = db.favoriteDao()
-                val favoriteRecipes = db.favoriteDao().getAllRecipes()
+                val favoriteRecipes = favoriteDao.getAllRecipes()
                 favoriteRecipes.size
                 if (isToFavorite) {
                     favoriteDao.addRecipe(recipe)

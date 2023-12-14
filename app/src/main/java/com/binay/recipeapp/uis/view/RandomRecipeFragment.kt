@@ -24,7 +24,9 @@ import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
+import com.binay.recipeapp.util.NetworkUtil
 import com.binay.recipeapp.util.ViewModelFactory
+import com.google.android.material.snackbar.Snackbar
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -76,6 +78,10 @@ class RandomRecipeFragment : DialogFragment() {
     private fun initView() {
         mBinding.explore.setOnClickListener {
             if (recipeId != -1) {
+                if (!NetworkUtil.isNetworkAvailable(requireContext())) {
+                    Snackbar.make(requireActivity().findViewById(android.R.id.content), getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
                 val intent = Intent(context, RecipeDetailActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 intent.putExtra("recipe_id", recipeId)
