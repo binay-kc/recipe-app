@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -212,5 +213,13 @@ class MainActivity : BaseActivity(),
                 Log.e("Home fragment ", "refreshed")
             }
         }
+    }
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putLong("started_at", 0)
+        editor?.apply()
     }
 }

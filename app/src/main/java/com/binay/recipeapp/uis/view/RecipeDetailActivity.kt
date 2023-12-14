@@ -1,5 +1,6 @@
 package com.binay.recipeapp.uis.view
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -78,11 +79,13 @@ class RecipeDetailActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
         }
 
         mBinding.btnStartCooking.setOnClickListener {
+            mBinding.btnStartCooking.text = "View Timer"
             if (readyInMinutes != null) {
-                val intent = Intent(this, CookingTimerActivity::class.java)
-                intent.putExtra("ready_in_minutes", readyInMinutes)
-                intent.putExtra("recipe_name", recipeName)
-                startActivity(intent)
+                val cookingFragment = CookingTimerActivity().newInstance(readyInMinutes!!, recipeName)
+                cookingFragment?.show(
+                    supportFragmentManager,
+                    CookingTimerActivity::class.java.canonicalName
+                )
             }
         }
 
@@ -231,6 +234,15 @@ class RecipeDetailActivity : BaseActivity(), TabLayout.OnTabSelectedListener {
                 )
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        val sharedPreferences = getSharedPreferences("my_preferences", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putLong("started_at", 0)
+        editor?.apply()
     }
 
     override fun onTabSelected(tab: TabLayout.Tab) {

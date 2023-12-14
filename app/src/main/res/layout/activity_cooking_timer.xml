@@ -1,152 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="15dp"
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true"
     tools:context=".uis.view.cookingTimer.CookingTimerActivity">
 
-    <FrameLayout
-        android:id="@+id/fl_toolbar"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/item_toolbar_inner_activity" />
-
-    </FrameLayout>
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/cpv_timer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="100dp"
-        android:progress="1"
-        app:indicatorColor="@color/circular_progress_indicator_color"
-        app:indicatorDirectionCircular="counterclockwise"
-        app:layout_constraintBottom_toTopOf="@id/btn_cancel_cooking"
-        app:layout_constraintDimensionRatio="H,1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fl_toolbar"
-        app:trackColor="@color/circular_progress_track_color"
-        app:trackCornerRadius="1dp"
-        app:trackThickness="1dp" />
-
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/cpv_timer"
-        app:layout_constraintEnd_toEndOf="@id/cpv_timer"
-        app:layout_constraintStart_toStartOf="@id/cpv_timer"
-        app:layout_constraintTop_toTopOf="@id/cpv_timer">
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/ll_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tv_hour_tenth"
-                style="@style/timer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_default_hour" />
-
-            <TextView
-                android:id="@+id/tv_hour_zeroth"
-                style="@style/timer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/timer_margin_start"
-                android:text="@string/label_default_hour" />
-
-            <TextView
-                style="@style/timer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/timer_margin_start"
-                android:text="@string/label_colon" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/ll_minute"
+        <TextView
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/timer_margin_start"
-            app:layout_constraintBottom_toBottomOf="@id/ll_hour"
-            app:layout_constraintStart_toEndOf="@id/ll_hour"
-            app:layout_constraintTop_toTopOf="@id/ll_hour">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:textStyle="bold"
+            android:text="@string/label_timer" />
 
-            <TextView
-                android:id="@+id/tv_minute_tenth"
-                style="@style/timer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_default_hour" />
+        <ImageButton
+            android:id="@+id/close"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@null"
+            android:padding="8dp"
+            android:layout_marginHorizontal="5dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_minimize"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/tv_minute_zeroth"
-                style="@style/timer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/timer_margin_start"
-                android:text="@string/label_default_hour" />
-
-            <TextView
-                style="@style/timer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/timer_margin_start"
-                android:text="@string/label_colon" />
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/cpv_timer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:progress="1"
+            app:indicatorColor="@color/circular_progress_indicator_color"
+            app:indicatorDirectionCircular="counterclockwise"
+            app:layout_constraintBottom_toTopOf="@id/btn_cancel_cooking"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/close"
+            app:trackColor="@color/circular_progress_track_color"
+            app:trackCornerRadius="1dp"
+            app:trackThickness="1dp" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
-            android:id="@+id/ll_second"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/timer_margin_start"
-            app:layout_constraintBottom_toBottomOf="@id/ll_hour"
-            app:layout_constraintStart_toEndOf="@id/ll_minute"
-            app:layout_constraintTop_toTopOf="@id/ll_hour">
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/cpv_timer"
+            app:layout_constraintEnd_toEndOf="@id/cpv_timer"
+            app:layout_constraintStart_toStartOf="@id/cpv_timer"
+            app:layout_constraintTop_toTopOf="@id/cpv_timer">
 
-            <TextView
-                android:id="@+id/tv_second_tenth"
-                style="@style/timer_text"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_hour"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_default_hour" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/tv_second_zeroth"
-                style="@style/timer_text"
+                <TextView
+                    android:id="@+id/tv_hour_tenth"
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_default_hour" />
+
+                <TextView
+                    android:id="@+id/tv_hour_zeroth"
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/timer_margin_start"
+                    android:text="@string/label_default_hour" />
+
+                <TextView
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/timer_margin_start"
+                    android:text="@string/label_colon" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_minute"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/timer_margin_start"
-                android:text="@string/label_default_hour" />
+                app:layout_constraintBottom_toBottomOf="@id/ll_hour"
+                app:layout_constraintStart_toEndOf="@id/ll_hour"
+                app:layout_constraintTop_toTopOf="@id/ll_hour">
+
+                <TextView
+                    android:id="@+id/tv_minute_tenth"
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_default_hour" />
+
+                <TextView
+                    android:id="@+id/tv_minute_zeroth"
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/timer_margin_start"
+                    android:text="@string/label_default_hour" />
+
+                <TextView
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/timer_margin_start"
+                    android:text="@string/label_colon" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/timer_margin_start"
+                app:layout_constraintBottom_toBottomOf="@id/ll_hour"
+                app:layout_constraintStart_toEndOf="@id/ll_minute"
+                app:layout_constraintTop_toTopOf="@id/ll_hour">
+
+                <TextView
+                    android:id="@+id/tv_second_tenth"
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_default_hour" />
+
+                <TextView
+                    android:id="@+id/tv_second_zeroth"
+                    style="@style/timer_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/timer_margin_start"
+                    android:text="@string/label_default_hour" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btn_cancel_cooking"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="20dp"
+            android:backgroundTint="@color/secondary_color"
+            android:text="@string/label_cancel"
+            android:textColor="@color/white"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/btn_cancel_cooking"
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="20dp"
-        android:backgroundTint="@color/secondary_color"
-        android:text="@string/label_cancel"
-        android:textColor="@color/white"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>
