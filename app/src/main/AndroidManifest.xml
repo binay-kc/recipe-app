@@ -15,18 +15,14 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.RecipeApp"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".uis.view.cookingTimer.CookingTimerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".uis.view.MainActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustPan">
+            android:name=".uis.view.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,10 +30,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".uis.view.cookingTimer.CookingTimerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".uis.view.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
             android:name=".uis.view.RecipeDetailActivity"
-            android:screenOrientation="portrait"
+            android:exported="true"
             android:launchMode="singleTop"
-            android:exported="true">
+            android:screenOrientation="portrait">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
 
@@ -45,17 +48,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
                     android:host="open.my.recipe"
-                    android:pathPrefix="/detail" />
+                    android:pathPrefix="/detail"
+                    android:scheme="http" />
             </intent-filter>
         </activity>
         <activity android:name=".uis.view.ShoppingListActivity" />
-        <activity android:name="com.binay.recipeapp.uis.view.ExternalWebsitesActivity" />
-        <activity android:name="com.binay.recipeapp.uis.view.WebViewActivity" />
+        <activity android:name=".uis.view.ExternalWebsitesActivity" />
+        <activity android:name=".uis.view.WebViewActivity" />
 
         <receiver android:name=".uis.view.cookingTimer.AlarmReceiver" />
-
     </application>
 
 </manifest>
