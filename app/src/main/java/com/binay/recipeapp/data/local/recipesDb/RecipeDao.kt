@@ -10,14 +10,11 @@ import com.binay.recipeapp.data.model.RecipeData
 interface RecipeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAllRecipes(recipes: List<RecipeData>)
+    suspend fun addAllRecipes(recipes: List<RecipeData>)
 
     @Query("Select * From recipes WHERE tagToBeSearchedBy = :tag")
-    fun getRecipes(tag: String): List<RecipeData>?
-
-    @Query("Select * From recipes WHERE id = :recipeId")
-    fun getRecipe(recipeId: Int): RecipeData?
+    suspend fun getRecipes(tag: String): List<RecipeData>?
 
     @Query("Delete FROM recipes WHERE id in (:recipeIds)")
-    fun removePreviousRecipes(recipeIds: List<Int>)
+    suspend fun removePreviousRecipes(recipeIds: List<Int>)
 }

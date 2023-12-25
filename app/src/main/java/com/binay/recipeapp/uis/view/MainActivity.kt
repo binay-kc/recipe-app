@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -14,10 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.databinding.ActivityMainBinding
-import com.binay.recipeapp.uis.base.BaseActivity
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.search.SearchFragment
 import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
@@ -29,7 +27,7 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
 
-class MainActivity : BaseActivity(),
+class MainActivity : AppCompatActivity(),
     MoreFragment.MoreFragmentListener,
     HomeFragment.HomeFragmentListener,
     FavoriteFragment.FavoriteListener,
@@ -128,7 +126,7 @@ class MainActivity : BaseActivity(),
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this, mDatabase)
+            ViewModelFactory(this)
         )[MainViewModel::class.java]
 
         val fragmentViewModel = ViewModelProvider(this)[FragmentDataViewModel::class.java]
@@ -214,6 +212,7 @@ class MainActivity : BaseActivity(),
             }
         }
     }
+
     override fun onDestroy() {
         super.onDestroy()
 

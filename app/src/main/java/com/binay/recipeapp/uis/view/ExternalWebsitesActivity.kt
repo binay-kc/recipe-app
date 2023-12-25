@@ -3,22 +3,20 @@ package com.binay.recipeapp.uis.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.WebsiteData
 import com.binay.recipeapp.databinding.ActivityExternalWebsitesBinding
-import com.binay.recipeapp.uis.base.BaseActivity
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 
-class ExternalWebsitesActivity : BaseActivity(),
+class ExternalWebsitesActivity : AppCompatActivity(),
     WebsiteRecyclerAdapter.OnWebsiteClickListener {
 
     private lateinit var mBinding: ActivityExternalWebsitesBinding
@@ -53,7 +51,7 @@ class ExternalWebsitesActivity : BaseActivity(),
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this, mDatabase)
+            ViewModelFactory(this)
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

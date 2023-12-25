@@ -15,27 +15,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
-import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.databinding.FragmentSearchBinding
-import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.view.HomeFragment
 import com.binay.recipeapp.uis.view.RecipeDetailActivity
-import com.binay.recipeapp.uis.view.RecipeRecyclerAdapter
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.NetworkUtil
 import com.binay.recipeapp.util.ViewModelFactory
-import com.google.android.material.chip.ChipGroup
-import com.google.android.material.chip.ChipGroup.OnCheckedStateChangeListener
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class SearchFragment : BaseFragment() {
+class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
     private lateinit var mViewModel: MainViewModel
@@ -138,7 +131,7 @@ class SearchFragment : BaseFragment() {
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
+            ViewModelFactory(requireContext())
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

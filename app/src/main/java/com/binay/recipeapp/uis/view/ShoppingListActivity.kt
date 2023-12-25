@@ -4,15 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.databinding.ActivityShoppingListBinding
-import com.binay.recipeapp.uis.base.BaseActivity
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
@@ -21,7 +19,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 
-class ShoppingListActivity: BaseActivity(),
+class ShoppingListActivity: AppCompatActivity(),
     ShoppingListRecyclerAdapter.GroceryItemClickListener {
 
     private lateinit var mBinding: ActivityShoppingListBinding
@@ -95,7 +93,7 @@ class ShoppingListActivity: BaseActivity(),
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), this, mDatabase)
+            ViewModelFactory(this)
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

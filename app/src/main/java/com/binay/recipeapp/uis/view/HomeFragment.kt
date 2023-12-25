@@ -7,19 +7,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.databinding.FragmentHomeBinding
-import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
@@ -30,7 +26,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.util.Locale
 
-class HomeFragment : BaseFragment(), OnCategoryClickListener {
+class HomeFragment : Fragment(), OnCategoryClickListener {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var adapter: CategoryRecyclerAdapter
@@ -86,7 +82,11 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
 
                 override fun onRecipeClicked(recipe: RecipeData) {
                     if (!NetworkUtil.isNetworkAvailable(requireContext())) {
-                        Snackbar.make(binding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.no_connection),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         return
                     }
                     val intent = Intent(context, RecipeDetailActivity::class.java)
@@ -101,7 +101,11 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
         binding.refreshLayout.setOnRefreshListener {
             if (!NetworkUtil.isNetworkAvailable(requireContext())) {
                 binding.refreshLayout.isRefreshing = false
-                Snackbar.make(binding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.no_connection),
+                    Snackbar.LENGTH_SHORT
+                ).show()
             } else
                 getCategoryWiseData()
         }
@@ -119,7 +123,7 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
     private fun initViewModel() {
         viewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
+            ViewModelFactory(requireContext())
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {
@@ -140,7 +144,10 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
                         Log.d("haancha", "initViewModel: " + it.recipeResponseData)
                         responseData = it.recipeResponseData
                         recipeAdapter.setRecipes(it.recipeResponseData.recipes)
-                        if (it.recipeResponseData.recipes.isEmpty() && !NetworkUtil.isNetworkAvailable(requireContext()))
+                        if (it.recipeResponseData.recipes.isEmpty() && !NetworkUtil.isNetworkAvailable(
+                                requireContext()
+                            )
+                        )
                             binding.noInternetLayout.visibility = View.VISIBLE
 
                     }
@@ -198,7 +205,10 @@ class HomeFragment : BaseFragment(), OnCategoryClickListener {
             }
 
             else -> {
-                Log.d("hanyo", "categoryClick: " + currentCategoryPosition + cuisines[currentCategoryPosition])
+                Log.d(
+                    "hanyo",
+                    "categoryClick: " + currentCategoryPosition + cuisines[currentCategoryPosition]
+                )
                 fetchData(cuisines[currentCategoryPosition].lowercase(Locale.ROOT))
             }
         }

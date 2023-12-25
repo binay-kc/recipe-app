@@ -11,11 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.databinding.FragmentFavoriteBinding
-import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
@@ -24,7 +21,7 @@ import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-class FavoriteFragment : BaseFragment() {
+class FavoriteFragment : Fragment() {
 
     private lateinit var mBinding: FragmentFavoriteBinding
     private lateinit var mAdapter: RecipeRecyclerAdapter
@@ -66,7 +63,11 @@ class FavoriteFragment : BaseFragment() {
 
                 override fun onRecipeClicked(recipe: RecipeData) {
                     if (!NetworkUtil.isNetworkAvailable(requireContext())) {
-                        Snackbar.make(mBinding.root, getString(R.string.no_connection), Snackbar.LENGTH_SHORT).show()
+                        Snackbar.make(
+                            mBinding.root,
+                            getString(R.string.no_connection),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                         return
                     }
                     val intent = Intent(context, RecipeDetailActivity::class.java)
@@ -87,7 +88,7 @@ class FavoriteFragment : BaseFragment() {
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
+            ViewModelFactory(requireContext())
         )[MainViewModel::class.java]
 
         lifecycleScope.launch {

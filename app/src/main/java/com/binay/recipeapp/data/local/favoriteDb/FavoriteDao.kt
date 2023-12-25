@@ -10,16 +10,16 @@ import com.binay.recipeapp.data.model.RecipeData
 @Dao
 interface FavoriteDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addRecipe(recipe: RecipeData)
+    suspend fun addRecipe(recipe: RecipeData)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAllRecipes(recipes: List<RecipeData>)
+    suspend fun addAllRecipes(recipes: List<RecipeData>)
 
     @Query("Select * From recipes WHERE isFavorite = 1")
-    fun getAllRecipes(): List<RecipeData>
+    suspend fun getAllRecipes(): List<RecipeData>
 
     @Query("Select * From recipes WHERE id = :recipeId AND isFavorite = 1")
-    fun getRecipe(recipeId: Int): RecipeData?
+    suspend fun getRecipe(recipeId: Int): RecipeData?
 
     @Update
     suspend fun removeRecipeFromFavorite(recipe: RecipeData)

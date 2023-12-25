@@ -1,7 +1,6 @@
 package com.binay.recipeapp.uis.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,21 +8,18 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.binay.recipeapp.R
-import com.binay.recipeapp.data.api.ApiHelper
-import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.databinding.FragmentUnitConverterBinding
-import com.binay.recipeapp.uis.base.BaseFragment
 import com.binay.recipeapp.uis.intent.UnitIntent
 import com.binay.recipeapp.uis.viewmodel.UnitConverterViewModel
 import com.binay.recipeapp.uis.viewstate.UnitState
 import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 
-class UnitConverterFragment : BaseFragment() {
+class UnitConverterFragment : Fragment() {
 
     private lateinit var mBinding: FragmentUnitConverterBinding
     private lateinit var mUnitArray: Array<String>
@@ -55,7 +51,7 @@ class UnitConverterFragment : BaseFragment() {
     private fun initViewModel() {
         mViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(ApiHelperImpl(RetrofitBuilder.apiService), requireContext(), mDatabase)
+            ViewModelFactory(requireContext())
         )[UnitConverterViewModel::class.java]
 
         observeViewModel()
