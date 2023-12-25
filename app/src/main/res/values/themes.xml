@@ -2,16 +2,19 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.RecipeApp" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here. -->
-         <item name="colorPrimary">@color/primary_color</item>
-        <item name="android:windowBackground">@color/background</item>
+        <item name="colorPrimary">@color/primary_color</item>
         <item name="android:textViewStyle">@style/AppText</item>
+        <!--        Changes background color of Splash Screen-->
+        <item name="android:windowSplashScreenIconBackgroundColor" tools:targetApi="s">
+            @color/background
+        </item>
     </style>
 
     <style name="AppBottomSheetDialogFragmentTheme" parent="Theme.Material3.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
     </style>
 
-    <style name="Theme.RecipeApp" parent="Base.Theme.RecipeApp" >
+    <style name="Theme.RecipeApp" parent="Base.Theme.RecipeApp">
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogFragmentTheme</item>
     </style>
 
@@ -48,6 +51,7 @@
     </style>
 
     //color for the checkbox
+
     <style name="CustomCheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="colorPrimary">@color/secondary_color</item>
     </style>
