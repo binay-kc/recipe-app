@@ -13,8 +13,10 @@ import com.binay.recipeapp.databinding.ActivityExternalWebsitesBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class ExternalWebsitesActivity : AppCompatActivity(),
     WebsiteRecyclerAdapter.OnWebsiteClickListener {
 

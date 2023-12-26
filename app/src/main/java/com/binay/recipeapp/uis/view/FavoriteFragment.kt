@@ -18,8 +18,9 @@ import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.NetworkUtil
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private lateinit var mBinding: FragmentFavoriteBinding

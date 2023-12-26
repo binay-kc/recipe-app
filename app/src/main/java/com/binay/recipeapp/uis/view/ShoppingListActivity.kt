@@ -15,9 +15,10 @@ import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class ShoppingListActivity: AppCompatActivity(),
     ShoppingListRecyclerAdapter.GroceryItemClickListener {
 
