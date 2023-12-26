@@ -1,8 +1,6 @@
 package com.binay.recipeapp.data.local.favoriteDb
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.binay.recipeapp.data.local.WebsiteDao
@@ -24,20 +22,4 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun websiteDao(): WebsiteDao
     abstract fun randomRecipeDao(): RandomRecipeDao
     abstract fun recipeDao(): RecipeDao
-}
-
-
-private lateinit var INSTANCE: AppDatabase
-
-fun getDatabase(context: Context): AppDatabase {
-    synchronized(AppDatabase::class.java) {
-        if (!::INSTANCE.isInitialized) {
-            INSTANCE = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java,
-                "recipe-palette"
-            ).build()
-        }
-    }
-    return INSTANCE
 }

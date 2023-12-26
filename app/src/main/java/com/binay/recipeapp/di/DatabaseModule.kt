@@ -2,6 +2,7 @@ package com.binay.recipeapp.di
 
 import android.content.Context
 import androidx.room.Room
+import com.binay.recipeapp.data.local.WebsiteDao
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.local.favoriteDb.FavoriteDao
 import dagger.Module
@@ -28,5 +29,10 @@ object DatabaseModule {
     @Provides
     fun provideFavoriteDao(database: AppDatabase): FavoriteDao {
         return database.favoriteDao()
+    }
+
+    @Provides
+    fun provideWebsiteDao(database: AppDatabase): WebsiteDao {
+        return database.websiteDao()
     }
 }

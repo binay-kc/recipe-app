@@ -31,10 +31,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
-    MoreFragment.MoreFragmentListener,
     HomeFragment.HomeFragmentListener,
     FavoriteFragment.FavoriteListener,
     SearchFragment.SearchListener {
+
 
     private lateinit var binding: ActivityMainBinding
     private val mViewModel: MainViewModel by viewModels()
@@ -127,11 +127,6 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun initViewModel() {
-//        mViewModel = ViewModelProvider(
-//            this,
-//            ViewModelFactory(this)
-//        )[MainViewModel::class.java]
-
         val fragmentViewModel = ViewModelProvider(this)[FragmentDataViewModel::class.java]
 
         lifecycleScope.launch {
@@ -149,7 +144,7 @@ class MainActivity : AppCompatActivity(),
                     }
 
                     else -> {
-
+                        Log.e("Response is here","as")
                     }
                 }
             }
@@ -188,10 +183,6 @@ class MainActivity : AppCompatActivity(),
         override fun getItemCount(): Int {
             return fragments.size
         }
-    }
-
-    override fun onUnitConverterClicked() {
-
     }
 
     override fun refreshFavoriteFragment() {

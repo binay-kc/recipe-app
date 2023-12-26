@@ -12,5 +12,5 @@ interface WebsiteDao {
     suspend fun insert(website: List<WebsiteData>)
 
     @Query("SELECT * FROM websites")
-    fun getAll(): List<WebsiteData>
+    suspend fun getAll(): List<WebsiteData>
 }

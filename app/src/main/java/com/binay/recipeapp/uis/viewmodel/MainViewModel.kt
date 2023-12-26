@@ -1,11 +1,11 @@
 package com.binay.recipeapp.uis.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.binay.recipeapp.data.api.ApiHelperImpl
+import com.binay.recipeapp.data.local.WebsiteDao
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
+import com.binay.recipeapp.data.local.favoriteDb.FavoriteDao
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
@@ -14,7 +14,6 @@ import com.binay.recipeapp.data.repository.MainRepository
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewstate.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +26,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val mRepository: MainRepository,
     private val db: AppDatabase,
-//    private val apiService: ApiService
+    private val favoriteDao: FavoriteDao,
+    private val websiteDao: WebsiteDao
 ) : ViewModel() {
     val dataIntent = Channel<DataIntent>(Channel.UNLIMITED)
     val dataState = MutableStateFlow<DataState>(DataState.Inactive)
@@ -39,40 +39,45 @@ class MainViewModel @Inject constructor(
 
     private fun insertWebsiteData() {
         viewModelScope.launch {
-            val websiteDao = db.websiteDao()
-
-            val websiteList: MutableList<WebsiteData> = ArrayList()
-            websiteList.add(WebsiteData("Yummy", "https://www.yummly.com/recipes"))
-            websiteList.add(WebsiteData("MyRecipes", "https://www.myrecipes.com/"))
-            websiteList.add(WebsiteData("Allrecipes", "https://www.allrecipes.com/"))
-            websiteList.add(WebsiteData("Food Network", "https://www.foodnetwork.com/recipes"))
-            websiteList.add(WebsiteData("BBC Good Food", "https://www.bbcgoodfood.com/"))
-            websiteList.add(WebsiteData("Tasty", "https://tasty.co/"))
-            websiteList.add(WebsiteData("Epicurious", "https://www.epicurious.com/"))
-            websiteList.add(WebsiteData("Serious Eats", "https://www.seriouseats.com/recipes"))
-            websiteList.add(WebsiteData("Bon Appétit", "https://www.bonappetit.com/recipes"))
-            websiteList.add(WebsiteData("Simply Recipes", "https://www.simplyrecipes.com/"))
-            websiteList.add(WebsiteData("EatingWell", "https://www.eatingwell.com/recipes"))
-            websiteList.add(
-                WebsiteData(
-                    "The Spruce Eats",
-                    "https://www.thespruceeats.com/recipes-4160606/"
+            if (websiteDao.getAll().isNotEmpty()) {
+                val websiteList: MutableList<WebsiteData> = ArrayList()
+                websiteList.add(WebsiteData("Yummy", "https://www.yummly.com/recipes"))
+                websiteList.add(WebsiteData("MyRecipes", "https://www.myrecipes.com/"))
+                websiteList.add(WebsiteData("Allrecipes", "https://www.allrecipes.com/"))
+                websiteList.add(WebsiteData("Food Network", "https://www.foodnetwork.com/recipes"))
+                websiteList.add(WebsiteData("BBC Good Food", "https://www.bbcgoodfood.com/"))
+                websiteList.add(WebsiteData("Tasty", "https://tasty.co/"))
+                websiteList.add(WebsiteData("Epicurious", "https://www.epicurious.com/"))
+                websiteList.add(WebsiteData("Serious Eats", "https://www.seriouseats.com/recipes"))
+                websiteList.add(WebsiteData("Bon Appétit", "https://www.bonappetit.com/recipes"))
+                websiteList.add(WebsiteData("Simply Recipes", "https://www.simplyrecipes.com/"))
+                websiteList.add(WebsiteData("EatingWell", "https://www.eatingwell.com/recipes"))
+                websiteList.add(
+                    WebsiteData(
+                        "The Spruce Eats",
+                        "https://www.thespruceeats.com/recipes-4160606/"
+                    )
                 )
-            )
-            websiteList.add(WebsiteData("Skinnytaste", "https://www.skinnytaste.com/"))
-            websiteList.add(WebsiteData("Cookstr", "https://www.cookstr.com/"))
-            websiteList.add(WebsiteData("Taste of Home", "https://www.tasteofhome.com/recipes/"))
-            websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
-            websiteList.add(WebsiteData("Food52", "https://food52.com/recipes"))
-            websiteList.add(
-                WebsiteData(
-                    "Cooking Channel",
-                    "https://www.cookingchanneltv.com/recipes"
+                websiteList.add(WebsiteData("Skinnytaste", "https://www.skinnytaste.com/"))
+                websiteList.add(WebsiteData("Cookstr", "https://www.cookstr.com/"))
+                websiteList.add(
+                    WebsiteData(
+                        "Taste of Home",
+                        "https://www.tasteofhome.com/recipes/"
+                    )
                 )
-            )
-            websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
+                websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
+                websiteList.add(WebsiteData("Food52", "https://food52.com/recipes"))
+                websiteList.add(
+                    WebsiteData(
+                        "Cooking Channel",
+                        "https://www.cookingchanneltv.com/recipes"
+                    )
+                )
+                websiteList.add(WebsiteData("Delish", "https://www.delish.com/"))
 
-            websiteDao.insert(websiteList)
+                websiteDao.insert(websiteList)
+            }
         }
     }
 
@@ -157,7 +162,6 @@ class MainViewModel @Inject constructor(
             dataState.value = try {
                 recipe.isFavorite = isToFavorite
 //               Checks favorite Dao and updates data accordingly
-                val favoriteDao = db.favoriteDao()
                 val favoriteRecipes = favoriteDao.getAllRecipes()
                 favoriteRecipes.size
                 if (isToFavorite) {
@@ -176,7 +180,7 @@ class MainViewModel @Inject constructor(
 
     private suspend fun fetchFavoriteRecipes() {
         dataState.value = try {
-            val favoriteRecipe = db.favoriteDao().getAllRecipes()
+            val favoriteRecipe = favoriteDao.getAllRecipes()
             DataState.FavoriteResponse(favoriteRecipe.toCollection(ArrayList()))
         } catch (e: Exception) {
             DataState.Error(e.localizedMessage)
@@ -312,7 +316,7 @@ class MainViewModel @Inject constructor(
     private fun fetchWebsiteData() {
         viewModelScope.launch {
             dataState.value = try {
-                val websiteData = db.websiteDao().getAll()
+                val websiteData = websiteDao.getAll()
                 DataState.FetchWebsiteList(websiteData)
             } catch (e: Exception) {
                 DataState.Error(e.localizedMessage)

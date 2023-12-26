@@ -21,10 +21,8 @@ class ExternalWebsitesActivity : AppCompatActivity(),
     WebsiteRecyclerAdapter.OnWebsiteClickListener {
 
     private lateinit var mBinding: ActivityExternalWebsitesBinding
-//    private lateinit var mViewModel: MainViewModel
     private lateinit var mAdapter: WebsiteRecyclerAdapter
     private val mViewModel: MainViewModel by viewModels()
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,11 +50,6 @@ class ExternalWebsitesActivity : AppCompatActivity(),
     }
 
     private fun initViewModel() {
-//        mViewModel = ViewModelProvider(
-//            this,
-//            ViewModelFactory(this)
-//        )[MainViewModel::class.java]
-
         lifecycleScope.launch {
             mViewModel.dataState.collect {
                 when (it) {
