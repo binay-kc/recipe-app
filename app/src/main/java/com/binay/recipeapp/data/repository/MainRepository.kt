@@ -7,11 +7,13 @@ import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.data.repository.remote.RemoteRepo
 import com.binay.recipeapp.util.NetworkUtil
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-class MainRepository(
-    private val apiHelper: ApiHelper,
-    private val mContext: Context,
-    mDatabase: AppDatabase
+class MainRepository @Inject constructor(
+    @ApplicationContext private val mContext: Context,
+    mDatabase: AppDatabase,
+    private val apiHelper: ApiHelper
 ) {
 
     private val mLocalRepo: LocalRepo = LocalRepo(mDatabase)

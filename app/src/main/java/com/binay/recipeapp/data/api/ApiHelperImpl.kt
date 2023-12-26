@@ -1,12 +1,12 @@
 package com.binay.recipeapp.data.api
 
-
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.data.model.SearchedRecipe
 import com.binay.recipeapp.data.model.SearchedRecipeData
+import javax.inject.Inject
 
-class ApiHelperImpl(private val apiService: ApiService) : ApiHelper {
+class ApiHelperImpl @Inject constructor(private val apiService: ApiService) : ApiHelper {
     override suspend fun getData(tag: String): RecipeResponseData {
         return apiService.getData(tag)
     }
