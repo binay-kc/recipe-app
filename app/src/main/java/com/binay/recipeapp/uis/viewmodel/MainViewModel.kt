@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.binay.recipeapp.data.local.WebsiteDao
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.local.favoriteDb.FavoriteDao
+import com.binay.recipeapp.data.local.ingredientDb.IngredientDao
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
@@ -27,7 +28,8 @@ class MainViewModel @Inject constructor(
     private val mRepository: MainRepository,
     private val db: AppDatabase,
     private val favoriteDao: FavoriteDao,
-    private val websiteDao: WebsiteDao
+    private val websiteDao: WebsiteDao,
+    private val ingredientDao: IngredientDao
 ) : ViewModel() {
     val dataIntent = Channel<DataIntent>(Channel.UNLIMITED)
     val dataState = MutableStateFlow<DataState>(DataState.Inactive)
@@ -275,11 +277,13 @@ class MainViewModel @Inject constructor(
     }
 
     private fun fetchShoppingListData() {
-        dataState.value = try {
-            val ingredientData = db.ingredientDao().getAllIngredients()
-            DataState.IngredientResponse(ingredientData.toCollection(ArrayList()))
-        } catch (e: Exception) {
-            DataState.Error(e.localizedMessage)
+        viewModelScope.launch {
+            dataState.value = try {
+                val ingredientData = ingredientDao.getAllIngredients()
+                DataState.IngredientResponse(ingredientData.toCollection(ArrayList()))
+            } catch (e: Exception) {
+                DataState.Error(e.localizedMessage)
+            }
         }
     }
 
@@ -287,7 +291,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             dataState.value = DataState.Loading
             dataState.value = try {
-                val ingredientDao = db.ingredientDao()
                 ingredientDao.addAllIngredients(ingredients)
                 DataState.AddToShoppingList(ingredients)
             } catch (e: Exception) {
@@ -302,7 +305,6 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             dataState.value = DataState.Loading
             dataState.value = try {
-                val ingredientDao = db.ingredientDao()
                 ingredientDao.removeIngredient(ingredients)
                 val updatedList = ingredientDao.getAllIngredients()
                 DataState.IngredientResponse(updatedList.toCollection(ArrayList()))

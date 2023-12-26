@@ -15,10 +15,10 @@ interface IngredientDao {
     fun addIngredient(ingredient: ExtendedIngredients)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAllIngredients(ingredients: List<ExtendedIngredients>)
+    suspend fun addAllIngredients(ingredients: List<ExtendedIngredients>)
 
     @Query("Select * From ingredients")
-    fun getAllIngredients(): List<ExtendedIngredients>
+    suspend fun getAllIngredients(): List<ExtendedIngredients>
 
     @Query("Select * From ingredients WHERE id = :ingredientId")
     fun getIngredientData(ingredientId: Int): ExtendedIngredients

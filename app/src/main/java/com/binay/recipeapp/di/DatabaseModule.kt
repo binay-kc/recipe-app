@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.binay.recipeapp.data.local.WebsiteDao
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.local.favoriteDb.FavoriteDao
+import com.binay.recipeapp.data.local.ingredientDb.IngredientDao
 import com.binay.recipeapp.data.local.randomRecipeDb.RandomRecipeDao
 import com.binay.recipeapp.data.local.recipesDb.RecipeDao
 import dagger.Module
@@ -46,5 +47,10 @@ object DatabaseModule {
     @Provides
     fun provideRecipeDao(database: AppDatabase): RecipeDao {
         return database.recipeDao()
+    }
+
+    @Provides
+    fun provideIngredientDao(database: AppDatabase): IngredientDao {
+        return database.ingredientDao()
     }
 }
