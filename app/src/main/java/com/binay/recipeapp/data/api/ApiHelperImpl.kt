@@ -1,7 +1,6 @@
 package com.binay.recipeapp.data.api
 
 
-import android.util.Log
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.RecipeResponseData
 import com.binay.recipeapp.data.model.SearchedRecipe

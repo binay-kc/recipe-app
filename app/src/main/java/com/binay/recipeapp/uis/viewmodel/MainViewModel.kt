@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.binay.recipeapp.data.api.ApiHelperImpl
-import com.binay.recipeapp.data.api.RetrofitBuilder
+import com.binay.recipeapp.data.api.ApiService
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
@@ -27,14 +27,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     @ApplicationContext mContext: Context,
-    private val db: AppDatabase
+    private val db: AppDatabase,
+    private val apiService: ApiService
 ) : ViewModel() {
     val dataIntent = Channel<DataIntent>(Channel.UNLIMITED)
     val dataState = MutableStateFlow<DataState>(DataState.Inactive)
     private var mRepository: MainRepository
 
     init {
-        mRepository = MainRepository(ApiHelperImpl(RetrofitBuilder.apiService), mContext, db)
+        mRepository = MainRepository(ApiHelperImpl(apiService), mContext, db)
         handleIntent()
         insertWebsiteData()
     }
