@@ -21,6 +21,10 @@ interface FavoriteDao {
     @Query("Select * From recipes WHERE id = :recipeId AND isFavorite = 1")
     suspend fun getRecipe(recipeId: Int): RecipeData?
 
+    /**
+     * Sets isFavorite flag of recipe data object to false
+     * @param recipe
+     */
     @Update
     suspend fun removeRecipeFromFavorite(recipe: RecipeData)
 

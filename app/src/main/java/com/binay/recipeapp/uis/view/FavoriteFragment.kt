@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.recipeapp.R
@@ -17,7 +17,6 @@ import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.NetworkUtil
-import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -25,7 +24,8 @@ class FavoriteFragment : Fragment() {
 
     private lateinit var mBinding: FragmentFavoriteBinding
     private lateinit var mAdapter: RecipeRecyclerAdapter
-    private lateinit var mViewModel: MainViewModel
+    private val mViewModel: MainViewModel by viewModels()
+
 
     private var mListener: FavoriteListener? = null
 
@@ -86,11 +86,6 @@ class FavoriteFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        mViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(requireContext())
-        )[MainViewModel::class.java]
-
         lifecycleScope.launch {
             mViewModel.dataState.collect {
                 when (it) {

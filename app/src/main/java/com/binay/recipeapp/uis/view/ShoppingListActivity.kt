@@ -3,9 +3,9 @@ package com.binay.recipeapp.uis.view
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.binay.recipeapp.R
@@ -14,7 +14,6 @@ import com.binay.recipeapp.databinding.ActivityShoppingListBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
-import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
@@ -23,7 +22,7 @@ class ShoppingListActivity: AppCompatActivity(),
     ShoppingListRecyclerAdapter.GroceryItemClickListener {
 
     private lateinit var mBinding: ActivityShoppingListBinding
-    private lateinit var mViewModel: MainViewModel
+    private val mViewModel: MainViewModel by viewModels()
     private lateinit var mAdapter: ShoppingListRecyclerAdapter
 
     private var groceryList: MutableList<ExtendedIngredients> = ArrayList() //this stores the current shopping list from room
@@ -91,10 +90,10 @@ class ShoppingListActivity: AppCompatActivity(),
     }
 
     private fun initViewModel() {
-        mViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(this)
-        )[MainViewModel::class.java]
+//        mViewModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(this)
+//        )[MainViewModel::class.java]
 
         lifecycleScope.launch {
             mViewModel.dataState.collect {

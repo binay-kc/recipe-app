@@ -3,8 +3,8 @@ package com.binay.recipeapp.uis.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.recipeapp.R
@@ -13,15 +13,16 @@ import com.binay.recipeapp.databinding.ActivityExternalWebsitesBinding
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
-import com.binay.recipeapp.util.ViewModelFactory
 import kotlinx.coroutines.launch
 
 class ExternalWebsitesActivity : AppCompatActivity(),
     WebsiteRecyclerAdapter.OnWebsiteClickListener {
 
     private lateinit var mBinding: ActivityExternalWebsitesBinding
-    private lateinit var mViewModel: MainViewModel
+//    private lateinit var mViewModel: MainViewModel
     private lateinit var mAdapter: WebsiteRecyclerAdapter
+    private val mViewModel: MainViewModel by viewModels()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +50,10 @@ class ExternalWebsitesActivity : AppCompatActivity(),
     }
 
     private fun initViewModel() {
-        mViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(this)
-        )[MainViewModel::class.java]
+//        mViewModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(this)
+//        )[MainViewModel::class.java]
 
         lifecycleScope.launch {
             mViewModel.dataState.collect {

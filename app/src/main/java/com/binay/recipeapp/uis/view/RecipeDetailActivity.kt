@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,7 +23,6 @@ import com.binay.recipeapp.uis.view.cookingTimer.CookingTimerActivity
 import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
-import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -32,7 +32,7 @@ import kotlin.math.abs
 
 class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var mBinding: ActivityRecipedetailBinding
     private var recipeId = 0
     private var readyInMinutes: Int? = null
@@ -131,10 +131,10 @@ class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListene
                 mBinding.addToListButton.visibility = View.GONE
         }
 
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(this)
-        )[MainViewModel::class.java]
+//        viewModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(this)
+//        )[MainViewModel::class.java]
 
         lifecycleScope.launch {
             viewModel.dataState.collect {

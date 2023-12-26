@@ -4,11 +4,9 @@ import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
 import com.binay.recipeapp.data.api.ApiHelperImpl
 import com.binay.recipeapp.data.api.RetrofitBuilder
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
-import com.binay.recipeapp.data.local.favoriteDb.getDatabase
 import com.binay.recipeapp.data.model.ExtendedIngredients
 import com.binay.recipeapp.data.model.RecipeData
 import com.binay.recipeapp.data.model.SearchedRecipe
@@ -16,30 +14,34 @@ import com.binay.recipeapp.data.model.WebsiteData
 import com.binay.recipeapp.data.repository.MainRepository
 import com.binay.recipeapp.uis.intent.DataIntent
 import com.binay.recipeapp.uis.viewstate.DataState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import javax.inject.Inject
 
-class MainViewModel(mContext: Context) : ViewModel() {
-
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    @ApplicationContext mContext: Context,
+    private val db: AppDatabase
+) : ViewModel() {
     val dataIntent = Channel<DataIntent>(Channel.UNLIMITED)
     val dataState = MutableStateFlow<DataState>(DataState.Inactive)
-
-    private val _db = getDatabase(mContext)
     private var mRepository: MainRepository
 
     init {
-        mRepository = MainRepository(ApiHelperImpl(RetrofitBuilder.apiService), mContext, _db)
+        mRepository = MainRepository(ApiHelperImpl(RetrofitBuilder.apiService), mContext, db)
         handleIntent()
         insertWebsiteData()
     }
 
     private fun insertWebsiteData() {
         viewModelScope.launch {
-            val websiteDao = _db.websiteDao()
+            val websiteDao = db.websiteDao()
 
             val websiteList: MutableList<WebsiteData> = ArrayList()
             websiteList.add(WebsiteData("Yummy", "https://www.yummly.com/recipes"))
@@ -157,7 +159,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
             dataState.value = try {
                 recipe.isFavorite = isToFavorite
 //               Checks favorite Dao and updates data accordingly
-                val favoriteDao = _db.favoriteDao()
+                val favoriteDao = db.favoriteDao()
                 val favoriteRecipes = favoriteDao.getAllRecipes()
                 favoriteRecipes.size
                 if (isToFavorite) {
@@ -176,7 +178,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
 
     private suspend fun fetchFavoriteRecipes() {
         dataState.value = try {
-            val favoriteRecipe = _db.favoriteDao().getAllRecipes()
+            val favoriteRecipe = db.favoriteDao().getAllRecipes()
             DataState.FavoriteResponse(favoriteRecipe.toCollection(ArrayList()))
         } catch (e: Exception) {
             DataState.Error(e.localizedMessage)
@@ -195,7 +197,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
                 searchedRecipes.forEach {
                     val recipeId = it.id
                     if (recipeId != null) {
-                        val favoriteRecipe = _db.favoriteDao().getRecipe(recipeId)
+                        val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
                         if (favoriteRecipe != null) {
                             it.isFavorite = true
                         }
@@ -225,7 +227,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
                     Log.e("Favorite ", " Here")
                     recipeDetail.isFavorite = isToFavorite
 //               Checks favorite Dao and updates data accordingly
-                    val favoriteDao = _db.favoriteDao()
+                    val favoriteDao = db.favoriteDao()
                     if (isToFavorite) {
                         favoriteDao.addRecipe(recipeDetail)
                     } else {
@@ -256,7 +258,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
                 searchedRecipes.forEach {
                     val recipeId = it.id
                     if (recipeId != null) {
-                        val favoriteRecipe = _db.favoriteDao().getRecipe(recipeId)
+                        val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
                         if (favoriteRecipe != null) {
                             it.isFavorite = true
                         }
@@ -272,7 +274,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
 
     private fun fetchShoppingListData() {
         dataState.value = try {
-            val ingredientData = _db.ingredientDao().getAllIngredients()
+            val ingredientData = db.ingredientDao().getAllIngredients()
             DataState.IngredientResponse(ingredientData.toCollection(ArrayList()))
         } catch (e: Exception) {
             DataState.Error(e.localizedMessage)
@@ -283,7 +285,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
         viewModelScope.launch {
             dataState.value = DataState.Loading
             dataState.value = try {
-                val ingredientDao = _db.ingredientDao()
+                val ingredientDao = db.ingredientDao()
                 ingredientDao.addAllIngredients(ingredients)
                 DataState.AddToShoppingList(ingredients)
             } catch (e: Exception) {
@@ -298,7 +300,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
         viewModelScope.launch {
             dataState.value = DataState.Loading
             dataState.value = try {
-                val ingredientDao = _db.ingredientDao()
+                val ingredientDao = db.ingredientDao()
                 ingredientDao.removeIngredient(ingredients)
                 val updatedList = ingredientDao.getAllIngredients()
                 DataState.IngredientResponse(updatedList.toCollection(ArrayList()))
@@ -312,7 +314,7 @@ class MainViewModel(mContext: Context) : ViewModel() {
     private fun fetchWebsiteData() {
         viewModelScope.launch {
             dataState.value = try {
-                val websiteData = _db.websiteDao().getAll()
+                val websiteData = db.websiteDao().getAll()
                 DataState.FetchWebsiteList(websiteData)
             } catch (e: Exception) {
                 DataState.Error(e.localizedMessage)

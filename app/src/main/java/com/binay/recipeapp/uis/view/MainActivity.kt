@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,12 +22,14 @@ import com.binay.recipeapp.uis.view.search.SearchFragment
 import com.binay.recipeapp.uis.viewmodel.FragmentDataViewModel
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
-import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     MoreFragment.MoreFragmentListener,
     HomeFragment.HomeFragmentListener,
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity(),
     SearchFragment.SearchListener {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var mViewModel: MainViewModel
+    private val mViewModel: MainViewModel by viewModels()
 
     private val imageList = intArrayOf(
         R.drawable.nav_home,
@@ -124,10 +127,10 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun initViewModel() {
-        mViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(this)
-        )[MainViewModel::class.java]
+//        mViewModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(this)
+//        )[MainViewModel::class.java]
 
         val fragmentViewModel = ViewModelProvider(this)[FragmentDataViewModel::class.java]
 

@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.binay.recipeapp.R
@@ -23,7 +23,6 @@ import com.binay.recipeapp.uis.view.RecipeDetailActivity
 import com.binay.recipeapp.uis.viewmodel.MainViewModel
 import com.binay.recipeapp.uis.viewstate.DataState
 import com.binay.recipeapp.util.NetworkUtil
-import com.binay.recipeapp.util.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -31,7 +30,7 @@ import java.lang.Exception
 class SearchFragment : Fragment() {
 
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var mViewModel: MainViewModel
+    private val mViewModel: MainViewModel by viewModels()
     private lateinit var mAdapter: SearchedRecipeAdapter
     private var mListener: SearchListener? = null
 
@@ -129,10 +128,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        mViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(requireContext())
-        )[MainViewModel::class.java]
+//        mViewModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(requireContext())
+//        )[MainViewModel::class.java]
 
         lifecycleScope.launch {
             mViewModel.dataState.collect {

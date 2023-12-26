@@ -9,22 +9,23 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.binay.recipeapp.R
 import com.binay.recipeapp.databinding.FragmentUnitConverterBinding
 import com.binay.recipeapp.uis.intent.UnitIntent
 import com.binay.recipeapp.uis.viewmodel.UnitConverterViewModel
 import com.binay.recipeapp.uis.viewstate.UnitState
-import com.binay.recipeapp.util.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class UnitConverterFragment : Fragment() {
 
     private lateinit var mBinding: FragmentUnitConverterBinding
     private lateinit var mUnitArray: Array<String>
 
-    private lateinit var mViewModel: UnitConverterViewModel
+    private val mViewModel: UnitConverterViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,10 +50,10 @@ class UnitConverterFragment : Fragment() {
     }
 
     private fun initViewModel() {
-        mViewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(requireContext())
-        )[UnitConverterViewModel::class.java]
+//        mViewModel = ViewModelProvider(
+//            this,
+//            ViewModelFactory(requireContext())
+//        )[UnitConverterViewModel::class.java]
 
         observeViewModel()
     }
