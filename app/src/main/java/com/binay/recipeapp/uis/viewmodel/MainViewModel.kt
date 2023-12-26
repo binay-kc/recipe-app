@@ -26,11 +26,11 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val mRepository: MainRepository,
-    private val db: AppDatabase,
     private val favoriteDao: FavoriteDao,
     private val websiteDao: WebsiteDao,
     private val ingredientDao: IngredientDao
 ) : ViewModel() {
+
     val dataIntent = Channel<DataIntent>(Channel.UNLIMITED)
     val dataState = MutableStateFlow<DataState>(DataState.Inactive)
 
@@ -201,7 +201,7 @@ class MainViewModel @Inject constructor(
                 searchedRecipes.forEach {
                     val recipeId = it.id
                     if (recipeId != null) {
-                        val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
+                        val favoriteRecipe = favoriteDao.getRecipe(recipeId)
                         if (favoriteRecipe != null) {
                             it.isFavorite = true
                         }
@@ -231,7 +231,6 @@ class MainViewModel @Inject constructor(
                     Log.e("Favorite ", " Here")
                     recipeDetail.isFavorite = isToFavorite
 //               Checks favorite Dao and updates data accordingly
-                    val favoriteDao = db.favoriteDao()
                     if (isToFavorite) {
                         favoriteDao.addRecipe(recipeDetail)
                     } else {
@@ -262,7 +261,7 @@ class MainViewModel @Inject constructor(
                 searchedRecipes.forEach {
                     val recipeId = it.id
                     if (recipeId != null) {
-                        val favoriteRecipe = db.favoriteDao().getRecipe(recipeId)
+                        val favoriteRecipe = favoriteDao.getRecipe(recipeId)
                         if (favoriteRecipe != null) {
                             it.isFavorite = true
                         }
