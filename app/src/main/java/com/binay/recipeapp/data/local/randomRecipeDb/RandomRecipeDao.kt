@@ -15,7 +15,7 @@ interface RandomRecipeDao {
     suspend fun addRandomRecipe(recipe: RecipeData)
 
     @Query("Select * From recipes WHERE isRandom = 1 limit 1")
-    fun getRandomRecipe(): RecipeData?
+    suspend fun getRandomRecipe(): RecipeData?
 
     @Delete
     suspend fun removeRandomRecipe(recipe: RecipeData)

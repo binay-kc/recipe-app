@@ -5,6 +5,8 @@ import androidx.room.Room
 import com.binay.recipeapp.data.local.WebsiteDao
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
 import com.binay.recipeapp.data.local.favoriteDb.FavoriteDao
+import com.binay.recipeapp.data.local.randomRecipeDb.RandomRecipeDao
+import com.binay.recipeapp.data.local.recipesDb.RecipeDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,5 +36,15 @@ object DatabaseModule {
     @Provides
     fun provideWebsiteDao(database: AppDatabase): WebsiteDao {
         return database.websiteDao()
+    }
+
+    @Provides
+    fun provideRandomRecipeDao(database: AppDatabase): RandomRecipeDao {
+        return database.randomRecipeDao()
+    }
+
+    @Provides
+    fun provideRecipeDao(database: AppDatabase): RecipeDao {
+        return database.recipeDao()
     }
 }

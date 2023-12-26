@@ -1,12 +1,17 @@
 package com.binay.recipeapp.data.repository.local
 
-import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
+import com.binay.recipeapp.data.local.randomRecipeDb.RandomRecipeDao
+import com.binay.recipeapp.data.local.recipesDb.RecipeDao
 import com.binay.recipeapp.data.model.RecipeResponseData
+import javax.inject.Inject
 
-class LocalRepo(private val mDatabase: AppDatabase) {
+class LocalRepo @Inject constructor(
+    private val randomRecipeDao: RandomRecipeDao,
+    private val recipeDao: RecipeDao
+) {
 
-    fun getRandomRecipe(): RecipeResponseData? {
-        val randomRecipe = mDatabase.randomRecipeDao().getRandomRecipe()
+    suspend fun getRandomRecipe(): RecipeResponseData? {
+        val randomRecipe = randomRecipeDao.getRandomRecipe()
         if (randomRecipe != null) {
             return RecipeResponseData(arrayListOf(randomRecipe))
         }
@@ -14,7 +19,7 @@ class LocalRepo(private val mDatabase: AppDatabase) {
     }
 
     suspend fun getRecipesByTag(tag: String): RecipeResponseData? {
-        val recipes = mDatabase.recipeDao().getRecipes(tag)
+        val recipes = recipeDao.getRecipes(tag)
         if (recipes != null) return RecipeResponseData(ArrayList(recipes))
         return null
     }

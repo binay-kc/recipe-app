@@ -13,11 +13,10 @@ import javax.inject.Inject
 class MainRepository @Inject constructor(
     @ApplicationContext private val mContext: Context,
     mDatabase: AppDatabase,
-    private val apiHelper: ApiHelper
+    private val apiHelper: ApiHelper,
+    private val mLocalRepo: LocalRepo,
+    private val mRemoteRepo: RemoteRepo
 ) {
-
-    private val mLocalRepo: LocalRepo = LocalRepo(mDatabase)
-    private val mRemoteRepo: RemoteRepo = RemoteRepo(apiHelper, mDatabase)
 
     suspend fun getRecipes(tag: String): RecipeResponseData {
         if (!NetworkUtil.isNetworkAvailable(mContext)) {

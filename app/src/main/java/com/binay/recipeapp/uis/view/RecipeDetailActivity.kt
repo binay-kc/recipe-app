@@ -27,9 +27,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
+@AndroidEntryPoint
 class RecipeDetailActivity : AppCompatActivity(), TabLayout.OnTabSelectedListener {
 
     private val viewModel: MainViewModel by viewModels()

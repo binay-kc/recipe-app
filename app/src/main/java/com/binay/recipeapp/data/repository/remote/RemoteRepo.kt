@@ -3,21 +3,30 @@ package com.binay.recipeapp.data.repository.remote
 import android.util.Log
 import com.binay.recipeapp.data.api.ApiHelper
 import com.binay.recipeapp.data.local.favoriteDb.AppDatabase
+import com.binay.recipeapp.data.local.favoriteDb.FavoriteDao
+import com.binay.recipeapp.data.local.randomRecipeDb.RandomRecipeDao
+import com.binay.recipeapp.data.local.recipesDb.RecipeDao
 import com.binay.recipeapp.data.model.RecipeResponseData
+import javax.inject.Inject
 
-class RemoteRepo(private val apiHelper: ApiHelper, private val mDatabase: AppDatabase) {
+class RemoteRepo @Inject constructor(
+    private val apiHelper: ApiHelper,
+    private val randomRecipeDao: RandomRecipeDao, private val recipeDao: RecipeDao,
+    private val favoriteDao: FavoriteDao
+) {
 
     suspend fun getRandomRecipe(): RecipeResponseData {
         val randomRecipeData = apiHelper.getRandomRecipe()
         if (randomRecipeData.recipes.isNotEmpty()) {
             val newRandomRecipe = randomRecipeData.recipes[0]
             newRandomRecipe.isRandom = true
-            val randomDao = mDatabase.randomRecipeDao()
 //                    Fetch previous random recipe
-            val previousRandomRecipe = randomDao.getRandomRecipe()
+            val previousRandomRecipe = randomRecipeDao.getRandomRecipe()
             Log.e("Random recipe ", "ayo $previousRandomRecipe")
-            if (previousRandomRecipe != null) randomDao.removeRandomRecipe(previousRandomRecipe)
-            randomDao.addRandomRecipe(newRandomRecipe)
+            if (previousRandomRecipe != null) randomRecipeDao.removeRandomRecipe(
+                previousRandomRecipe
+            )
+            randomRecipeDao.addRandomRecipe(newRandomRecipe)
         }
         return randomRecipeData
     }
@@ -29,7 +38,7 @@ class RemoteRepo(private val apiHelper: ApiHelper, private val mDatabase: AppDat
         else apiHelper.getData(tag)
 
 //        Fetch and remove previous recipes which are not favorite
-        val recipeDao = mDatabase.recipeDao()
+
         val previousRecipes = recipeDao.getRecipes(tag)
 
         val isFirstLoad = previousRecipes?.isEmpty() == true
@@ -49,7 +58,7 @@ class RemoteRepo(private val apiHelper: ApiHelper, private val mDatabase: AppDat
 //            Checks favorite Dao and updates data accordingly
 //                Note: If room has recipe, then it is automatically favorite
             if (!isFirstLoad) {
-                val favoriteRecipe = mDatabase.favoriteDao().getRecipe(it.id)
+                val favoriteRecipe = favoriteDao.getRecipe(it.id)
                 Log.e("Favorite Recipe: ", " $favoriteRecipe")
                 if (favoriteRecipe != null) {
                     it.isFavorite = true
